@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/connected"
             android:textAlignment="center"
-            android:textColor="@color/flatui_turquoise"
+            android:textColor="@color/custom_blue2"
             android:textSize="@dimen/text_size_16sp" />
     </LinearLayout>
 

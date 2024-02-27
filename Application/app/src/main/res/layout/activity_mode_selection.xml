@@ -30,15 +30,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/kid"
-                android:textColor="@color/flatui_midnight_blue"
-                android:textSize="@dimen/text_size_32sp" />
+                android:text="@string/sis"
+                android:textColor="@color/custom_blue3"
+                android:textSize="@dimen/text_size_32sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/safe"
-                android:textColor="@color/flatui_turquoise"
+                android:text="@string/mo"
+                android:textColor="@color/custom_blue2"
+                android:textSize="@dimen/text_size_32sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nak"
+                android:textColor="@color/custom_blue3"
                 android:textSize="@dimen/text_size_32sp"
                 android:textStyle="bold" />
         </LinearLayout>

@@ -49,15 +49,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/kid"
-                        android:textColor="@color/flatui_midnight_blue"
-                        android:textSize="@dimen/text_size_32sp" />
+                        android:text="@string/sis"
+                        android:textColor="@color/custom_blue3"
+                        android:textSize="@dimen/text_size_32sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/safe"
-                        android:textColor="@color/flatui_turquoise"
+                        android:text="@string/mo"
+                        android:textColor="@color/custom_blue2"
+                        android:textSize="@dimen/text_size_32sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nak"
+                        android:textColor="@color/custom_blue3"
                         android:textSize="@dimen/text_size_32sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -114,15 +123,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_32dp"
-                    android:text="@string/mahmoud_mansour"
+                    android:text="@string/muhammad_zhafran_haris"
                     android:textSize="@dimen/text_size_16sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_32dp"
-                    android:text="@string/khalid_samir"
-                    android:textSize="@dimen/text_size_16sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -139,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_32dp"
-                    android:text="@string/d_marwa_abbas"
+                    android:text="@string/dr_yusuf_kurniawan"
                     android:textSize="@dimen/text_size_16sp" />
             </LinearLayout>
 

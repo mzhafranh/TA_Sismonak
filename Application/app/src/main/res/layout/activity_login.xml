@@ -33,15 +33,24 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/kid"
-                    android:textColor="@color/flatui_midnight_blue"
-                    android:textSize="@dimen/text_size_32sp" />
+                    android:text="@string/sis"
+                    android:textColor="@color/custom_blue3"
+                    android:textSize="@dimen/text_size_32sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/safe"
-                    android:textColor="@color/flatui_turquoise"
+                    android:text="@string/mo"
+                    android:textColor="@color/custom_blue2"
+                    android:textSize="@dimen/text_size_32sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nak"
+                    android:textColor="@color/custom_blue3"
                     android:textSize="@dimen/text_size_32sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -74,14 +83,14 @@
                     style="@style/MainEditText"
                     android:drawableStart="@drawable/ic_mail"
                     android:hint="@string/email_address"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"/>
 
                 <EditText
                     android:id="@+id/txtLogInPassword"
                     style="@style/MainEditText"
                     android:drawableStart="@drawable/ic_lock"
                     android:hint="@string/password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"/>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -94,7 +103,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/remember_me"
-                        android:textColor="@color/flatui_wet_asphalt" />
+                        android:textColor="@color/flatui_wet_asphalt"
+                        android:buttonTint="@color/custom_blue2"/>
 
                     <TextView
                         android:id="@+id/txtForgotPassword"
@@ -102,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center"
                         android:text="@string/forgot_your_password"
-                        android:textColor="@color/flatui_turquoise" />
+                        android:textColor="@color/custom_blue3" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -192,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_8dp"
                     android:text="@string/sign_up_here"
-                    android:textColor="@color/flatui_turquoise"
+                    android:textColor="@color/custom_blue3"
                     android:textSize="@dimen/text_size_16sp"
                     android:textStyle="bold" />
             </LinearLayout>

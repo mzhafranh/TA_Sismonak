@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">@color/white</color>
     <color name="colorPrimaryDark">@color/flatui_silver</color>
-    <color name="colorAccent">@color/flatui_turquoise</color>
+    <color name="colorAccent">@color/custom_blue2</color>
 
 
     <color name="white">#FFFFFF</color>
@@ -14,6 +14,11 @@
     <color name="flatui_clouds">#ecf0f1</color>
     <color name="flatui_silver">#bdc3c7</color>
     <color name="flatui_asbestos">#7f8c8d</color>
+
+    <color name="custom_blue1">#bbe1fa</color>
+    <color name="custom_blue2">#3282b8</color>
+    <color name="custom_blue3">#0f4c75</color>
+    <color name="custom_blue4">#1b262c</color>
 
 
 </resources>

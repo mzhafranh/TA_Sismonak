@@ -3,12 +3,13 @@
 
     <string-array name="geo_fence_entries">
         <item>You</item>
-        <item>Him</item>
+        <item>Child</item>
     </string-array>
 
     <string-array name="app_languages">
         <item>English</item>
-        <item>Arabic</item>
+        <item>Bahasa</item>
+<!--        <item>Arabic</item>-->
     </string-array>
 
     <string-array name="timer_entries">

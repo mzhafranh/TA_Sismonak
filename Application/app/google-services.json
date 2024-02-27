@@ -1,45 +1,27 @@
 {
   "project_info": {
-    "project_number": "487946012349",
-    "firebase_url": "https://kidsafe-3a667.firebaseio.com",
-    "project_id": "kidsafe-3a667",
-    "storage_bucket": "kidsafe-3a667.appspot.com"
+    "project_number": "573198939068",
+	"firebase_url": "https://sismonak-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sismonak-dev",
+    "storage_bucket": "sismonak-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:487946012349:android:d11fafe4263b5800",
+        "mobilesdk_app_id": "1:573198939068:android:0d50bc0b50434cc610f1b9",
         "android_client_info": {
-          "package_name": "com.mansourappdevelopment.androidapp.kidsafe"
+          "package_name": "com.mzhtech.sismonakdev"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "487946012349-jl6qltcr9jv44rmdrlh1l0dhfqkjvfgj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mansourappdevelopment.androidapp.kidsafe",
-            "certificate_hash": "54852af4dabff4d6c92c98c3c866c6d5d0ce3724"
-          }
-        },
-        {
-          "client_id": "487946012349-brimdf043dkkn6de7uspdv91mo7rc9s0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD8ZY-iWZat49hZx753bGivVVxzmHrwc90"
+          "current_key": "AIzaSyAS8tTTt4SDhD-bxvWg7g6bjIzHihMO2Sw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "487946012349-brimdf043dkkn6de7uspdv91mo7rc9s0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

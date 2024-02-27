@@ -170,4 +170,6 @@
     <string name="about_message">KidSafe هو تطبيق الرقابة الأبوية على نظام Android المجاني والمفتوح المصدر والذي يسمح للآباء بإبقاء نشاط أطفالهم تحت السيطرة. تم تطوير KidSafe كمشروع تخرج من قبل الأعضاء المحددين أدناه</string>
     <string name="please_turn_on_the_gps">قم بتفعيل ال GPS عند</string>
     <string name="select_app_language">أختر لغة التطبيق</string>
+    <string name="muhammad_zhafran_haris">Muhammad Zhafran Haris</string>
+    <string name="dr_yusuf_kurniawan">Dr. Yusuf Kurniawan, S.T, M.T.</string>
 </resources>
