@@ -185,5 +185,6 @@
     <string name="enter_your_password_to_delete_your_account">Enter your password to delete your account</string>
     <string name="would_you_love_to_add_a_profile_image">Would you like to add a profile image?</string>
     <string name="please_turn_on_the_gps">Please turn on the GPS on</string>
+    <string name="you">You</string>
 
 </resources>

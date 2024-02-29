@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="geo_fence_entries">
-        <item>You</item>
-        <item>Child</item>
+        <item>@string/you</item>
+        <item>@string/child</item>
     </string-array>
 
     <string-array name="app_languages">

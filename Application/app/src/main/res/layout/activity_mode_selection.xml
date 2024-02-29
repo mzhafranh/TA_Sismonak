@@ -73,18 +73,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
-            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginStart="@dimen/margin_48dp"
             android:orientation="vertical">
+
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgParentSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_parents"
-                app:civ_border_color="@color/flatui_wet_asphalt"
-                app:civ_border_width="@dimen/circular_image_border_large" />
-
+                android:src="@drawable/sismonak_parent"
+                />
 
             <TextView
                 android:id="@+id/txtParentSignUp"
@@ -101,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="@dimen/margin_32dp"
+            android:layout_marginEnd="@dimen/margin_48dp"
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -110,9 +109,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_4dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_children"
-                app:civ_border_color="@color/flatui_wet_asphalt"
-                app:civ_border_width="@dimen/circular_image_border_large" />
+                android:src="@drawable/sismonak_child"
+                />
 
             <TextView
                 android:id="@+id/txtChildSignUp"

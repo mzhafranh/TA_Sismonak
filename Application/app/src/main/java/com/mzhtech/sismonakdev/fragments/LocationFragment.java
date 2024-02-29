@@ -327,7 +327,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 					Location childLocation = child.getLocation();
 					String key = nodeShot.getKey();
 					
-					if (geoFenceCenter.equals("You")) {
+					if (geoFenceCenter.equals(getString(R.string.you))) {
 						if (userLocation == null || !Validators.isLocationOn(context)) {
 							startPermissionExplanationDialogFragment();
 						} else {
@@ -338,7 +338,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 							Location location = new Location(childLatitude, childLongitude, geoFenceDiameter, fenceCenterLatitude, fenceCenterLongitude, false, true);
 							databaseReference.child("childs").child(key).child("location").setValue(location);
 							startFencingService();
-							Toast.makeText(context, getString(R.string.center) + geoFenceCenter + " " + getString(R.string.diameter) + geoFenceDiameter, Toast.LENGTH_SHORT).show();
+							Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 						}
 					} else {
 						double childLatitude = childLocation.getLatitude();
@@ -346,7 +346,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 						Location location = new Location(childLatitude, childLongitude, geoFenceDiameter, childLatitude, childLongitude, false, true);
 						databaseReference.child("childs").child(key).child("location").setValue(location);
 						startFencingService();
-						Toast.makeText(context, getString(R.string.center) + geoFenceCenter + " " + getString(R.string.diameter) + geoFenceDiameter, Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 					}
 					
 				}
