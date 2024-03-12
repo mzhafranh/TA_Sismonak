@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginTop="@dimen/margin_128dp"
-        android:layout_marginBottom="@dimen/margin_64dp">
+        android:layout_marginBottom="@dimen/margin_128dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -79,11 +79,10 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgParentSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="114dp"
+                android:layout_height="114dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/sismonak_parent"
-                />
+                android:src="@drawable/sismonak_parent" />
 
             <TextView
                 android:id="@+id/txtParentSignUp"
@@ -105,12 +104,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgChildSignUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="114dp"
+                android:layout_height="114dp"
                 android:layout_margin="@dimen/margin_4dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/sismonak_child"
-                />
+                android:src="@drawable/sismonak_child" />
 
             <TextView
                 android:id="@+id/txtChildSignUp"

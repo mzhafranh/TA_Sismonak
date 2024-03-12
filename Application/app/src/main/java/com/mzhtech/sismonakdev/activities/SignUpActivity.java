@@ -124,7 +124,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		if (!parent) {
 			txtParentEmail.setVisibility(View.VISIBLE);
 		}
-		
+
 		txtSignUpPassword = findViewById(R.id.txtSignUpPassword);
 		txtSignUpName = findViewById(R.id.txtSignUpName);
 		
@@ -141,6 +141,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 			public void onClick(View v) {
 				String email = txtSignUpEmail.getText().toString().toLowerCase();
 				String password = txtSignUpPassword.getText().toString();
+				Log.i(TAG, "passwordUser: " + password);
 				signUp(email, password);
 			}
 		});
@@ -157,6 +158,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	
 	
 	private void signUp(String email, String password) {
+		Log.i(TAG, "emailUser: " + email + " " + "passwordUser: " + password);
 		if (isValid()) {
 			final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 			startLoadingFragment(loadingDialogFragment);
@@ -396,7 +398,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	@Override
 	public void onConfirmationCancel() {
 		imageUri = Uri.parse("android.resource://com.mzhtech.sismonakdev/drawable/ic_default_avatar");
-		signUp(txtSignUpEmail.getText().toString().toLowerCase(), txtSignUpPassword.toString());
+		signUp(txtSignUpEmail.getText().toString().toLowerCase(), txtSignUpPassword.getText().toString());
 		//TODO:: default image here
 		Log.i(TAG, "onConfirmationCancel: DONE");
 	}
