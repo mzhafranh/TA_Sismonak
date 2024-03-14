@@ -51,6 +51,7 @@ public class PermissionsActivity extends AppCompatActivity implements OnFragment
 			case Constant.PERMISSIONS_FRAGMENTS_FINISH:
 				SharedPrefsUtils.setBooleanPreference(this, Constant.CHILD_FIRST_LAUNCH, false);
 				Intent intent = new Intent(this, ChildSignedInActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);
 				break;
 		}
