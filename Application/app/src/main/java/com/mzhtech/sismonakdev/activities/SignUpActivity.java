@@ -399,7 +399,6 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	public void onConfirmationCancel() {
 		imageUri = Uri.parse("android.resource://com.mzhtech.sismonakdev/drawable/ic_default_avatar");
 		signUp(txtSignUpEmail.getText().toString().toLowerCase(), txtSignUpPassword.getText().toString());
-		//TODO:: default image here
 		Log.i(TAG, "onConfirmationCancel: DONE");
 	}
 	

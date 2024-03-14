@@ -164,6 +164,7 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 					Parent parent = nodeShot.getValue(Parent.class);
 					String parentName = parent.getName();
 					String profileImageUrl = parent.getProfileImage();
+					Log.i(TAG, "profileImageUrl: " + profileImageUrl);
 					Picasso.get().load(profileImageUrl).placeholder(R.drawable.ic_profile_image).error(R.drawable.ic_profile_image).into(imgParent);
 					progressBar.setVisibility(View.GONE);
 					linearLayout.setVisibility(View.VISIBLE);
