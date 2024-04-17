@@ -1,6 +1,9 @@
 package com.mzhtech.sismonakdev.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +26,9 @@ import java.util.ArrayList;
 import static com.mzhtech.sismonakdev.activities.ParentSignedInActivity.APPS_EXTRA;
 import static com.mzhtech.sismonakdev.activities.ParentSignedInActivity.CHILD_NAME_EXTRA;
 
+import org.osmdroid.config.Configuration;
+import java.io.File;
+
 public class ChildDetailsActivity extends AppCompatActivity {
 	private static final String TAG = "ChildDetailsTAG";
 	private ArrayList<App> apps;
@@ -35,7 +41,13 @@ public class ChildDetailsActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_child_details);
-		
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+			}
+		}
+
 		btnBack = findViewById(R.id.btnBack);
 		btnBack.setOnClickListener(new View.OnClickListener() {
 			@Override

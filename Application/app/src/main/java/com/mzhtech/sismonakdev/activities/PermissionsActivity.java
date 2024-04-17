@@ -25,8 +25,6 @@ public class PermissionsActivity extends AppCompatActivity implements OnFragment
 		setContentView(R.layout.activity_permissions);
 		
 		getSupportFragmentManager().beginTransaction().replace(R.id.permissionFragmentContainer, new PermissionsMainFragment()).commit();
-		
-		
 	}
 	
 	@Override

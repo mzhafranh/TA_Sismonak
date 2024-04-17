@@ -73,8 +73,6 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 			initializeAdapter(messagesList/*, this*/);
 			initializeItemTouchHelper();
 		}
-		
-		
 	}
 	
 	private void getData() {

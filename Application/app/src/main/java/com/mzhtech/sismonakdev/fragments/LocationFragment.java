@@ -89,6 +89,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
 		mapView = view.findViewById(R.id.mapView);
 		
 		fabGeoFence = view.findViewById(R.id.fabGeoFence);
@@ -271,6 +272,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 				if (location != null) {
 					userLocation = new Location(location.getLatitude(), location.getLongitude());
 					Log.i(TAG, "onLocationChanged: location lat: " + location.getLatitude() + "location long: " + location.getLongitude());
+					addMarkerForParent(userLocation);
 				}
 			}
 			
@@ -301,15 +303,15 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	}
 	
 	private void addMarkerForParent(Location location) {
-        /*GeoPoint parentGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+        GeoPoint parentGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
         Marker parentMarker = new Marker(mapView);
         parentMarker.setPosition(parentGeoPoint);
         parentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        parentMarker.setTitle("You");
-        parentMarker.setIcon(getResources().getDrawable(R.drawable.ic_parent));.
+        parentMarker.setTitle(getResources().getString(R.string.you));
+        parentMarker.setIcon(getResources().getDrawable(R.drawable.ic_location));
         mapView.getOverlays().add(parentMarker);
-        mapController.setCenter(parentGeoPoint);*/
+//        mapController.setCenter(parentGeoPoint);
 		
 	}
 	
