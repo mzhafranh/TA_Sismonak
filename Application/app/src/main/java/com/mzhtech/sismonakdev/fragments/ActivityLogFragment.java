@@ -1,6 +1,7 @@
 package com.mzhtech.sismonakdev.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,14 +31,35 @@ public class ActivityLogFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		//getData();
-		
+		super.onViewCreated(view, savedInstanceState);
+
 		ViewPager viewPager = view.findViewById(R.id.activityLogViewPager);
 		viewPager.setAdapter(setupActivityLogFragmentPagerAdapter());
 		
 		TabLayout tabLayout = view.findViewById(R.id.activityLogTabLayout);
 		tabLayout.setupWithViewPager(viewPager);
-		
-		
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		setupViewPager();
+		Log.i(TAG, "sampai onResume ActivityLogFragment");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.i(TAG, "sampai onPause ActivityLogFragment");
+	}
+
+	private void setupViewPager() {
+		ViewPager viewPager = getView().findViewById(R.id.activityLogViewPager);
+		viewPager.setAdapter(setupActivityLogFragmentPagerAdapter());
+
+		TabLayout tabLayout = getView().findViewById(R.id.activityLogTabLayout);
+		tabLayout.setupWithViewPager(viewPager);
 	}
 
     /*private void getData() {
@@ -57,7 +79,7 @@ public class ActivityLogFragment extends Fragment {
     }*/
 	
 	private PagerAdapter setupActivityLogFragmentPagerAdapter() {
-		ActivityLogFragmentPagerAdapter pagerAdapter = new ActivityLogFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+		ActivityLogFragmentPagerAdapter pagerAdapter = new ActivityLogFragmentPagerAdapter(getChildFragmentManager());
 		pagerAdapter.addFragment(new CallsFragment(), getResources().getString(R.string.calls));
 		pagerAdapter.addFragment(new MessagesFragment(), getResources().getString(R.string.messages));
 		pagerAdapter.addFragment(new ContactsFragment(), getResources().getString(R.string.contacts));

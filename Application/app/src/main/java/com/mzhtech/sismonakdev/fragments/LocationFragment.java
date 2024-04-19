@@ -77,7 +77,10 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private TextView txtNoLocation;
 	private FrameLayout layoutLocation;
 	private ProgressBar progressbarLocationFragment;
-	
+
+	private Marker childMarker;
+
+	private Marker parentMarker;
 	
 	@Nullable
 	@Override
@@ -226,9 +229,13 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	
 	
 	private void addMarkerForChild(Location location) {
-		mapView.getOverlays().clear();
+
+		if (childMarker != null) {
+			mapView.getOverlays().remove(childMarker); // Remove the old marker
+		}
+
 		GeoPoint childGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-		Marker childMarker = new Marker(mapView);
+		childMarker = new Marker(mapView);
 		childMarker.setPosition(childGeoPoint);
 		childMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 		childMarker.setTitle(childName);
@@ -305,12 +312,22 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private void addMarkerForParent(Location location) {
         GeoPoint parentGeoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-        Marker parentMarker = new Marker(mapView);
-        parentMarker.setPosition(parentGeoPoint);
-        parentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        parentMarker.setTitle(getResources().getString(R.string.you));
-        parentMarker.setIcon(getResources().getDrawable(R.drawable.ic_location));
-        mapView.getOverlays().add(parentMarker);
+		if (parentMarker != null) {
+			mapView.getOverlays().remove(parentMarker); // Remove the old marker
+		}
+
+		try {
+			parentMarker = new Marker(mapView);
+			parentMarker.setPosition(parentGeoPoint);
+			parentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+			parentMarker.setTitle(getResources().getString(R.string.you));
+			parentMarker.setIcon(getResources().getDrawable(R.drawable.ic_location));
+			mapView.getOverlays().add(parentMarker);
+		}
+		catch (NullPointerException e){
+			Log.i(TAG, e.getMessage());
+		}
+
 //        mapController.setCenter(parentGeoPoint);
 		
 	}

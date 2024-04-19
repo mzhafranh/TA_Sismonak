@@ -54,11 +54,12 @@ public class MessagesFragment extends Fragment /*implements OnMessageDeleteClick
 		super.onViewCreated(view, savedInstanceState);
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		
+		getData();
+
 		recyclerViewMessages = view.findViewById(R.id.recyclerViewMessages);
 		txtNoMessages = view.findViewById(R.id.txtNoMessages);
 		
-		getData();
+
 		
 		if (messagesList.isEmpty()) {
 			txtNoMessages.setVisibility(View.VISIBLE);

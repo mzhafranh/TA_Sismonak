@@ -56,7 +56,7 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
 		getData();
-		
+		Log.i(TAG, "sampai onViewCreated callsFragment");
 		recyclerViewCalls = view.findViewById(R.id.recyclerViewCalls);
 		txtNoCalls = view.findViewById(R.id.txtNoCalls);
 		
@@ -74,7 +74,14 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 			initializeItemTouchHelper();
 		}
 	}
-	
+
+//	@Override
+//	public void onResume() {
+//		super.onResume();
+//		Log.i(TAG, "sampai onResume callsFragment");
+//		getData();
+//	}
+
 	private void getData() {
 		Bundle bundle = getActivity().getIntent().getExtras();
 		if (bundle != null) {
