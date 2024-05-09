@@ -42,6 +42,7 @@ import com.mzhtech.sismonakdev.activities.BlockedAppActivity;
 import com.mzhtech.sismonakdev.activities.ChildSignedInActivity;
 import com.mzhtech.sismonakdev.broadcasts.AppInstalledReceiver;
 import com.mzhtech.sismonakdev.broadcasts.AppRemovedReceiver;
+import com.mzhtech.sismonakdev.broadcasts.AppUsageReceiver;
 import com.mzhtech.sismonakdev.broadcasts.PhoneStateReceiver;
 import com.mzhtech.sismonakdev.broadcasts.ScreenTimeReceiver;
 import com.mzhtech.sismonakdev.broadcasts.SmsReceiver;
@@ -65,6 +66,8 @@ public class MainForegroundService extends Service {
 	public static final int NOTIFICATION_ID = 27;
 	public static final String TAG = "MainServiceTAG";
 	public static final String BLOCKED_APP_NAME_EXTRA = "com.mzhtech.sismonakdev.services.BLOCKED_APP_NAME_EXTRA";
+
+	public static final String ACTION_REQUEST_UPLOAD = "com.mzhtech.sismonakdev.services.ACTION_REQUEST_UPLOAD";
 	public static final int LOCATION_UPDATE_INTERVAL = 1;    //every 5 seconds
 	public static final int LOCATION_UPDATE_DISPLACEMENT = 5;  //every 10 meters
 	private ExecutorService executorService;
@@ -74,6 +77,7 @@ public class MainForegroundService extends Service {
 	private AppInstalledReceiver appInstalledReceiver;
 	private AppRemovedReceiver appRemovedReceiver;
 	private ScreenTimeReceiver screenTimeReceiver;
+	private AppUsageReceiver appUsageReceiver;
 	private String uid;
 	private String childEmail;
 	private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -238,6 +242,9 @@ public class MainForegroundService extends Service {
 		appRemovedIntentFilter.addDataScheme("package");
 		registerReceiver(appRemovedReceiver, appRemovedIntentFilter);
 
+		appUsageReceiver = new AppUsageReceiver(user);
+		IntentFilter appUsageIntentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+		registerReceiver(appUsageReceiver, appUsageIntentFilter);
 
         /*screenTimeReceiver = new ScreenTimeReceiver(user);
         IntentFilter screenTimeIntentFilter = new IntentFilter();

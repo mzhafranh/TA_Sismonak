@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:layoutDirection="locale"
+    android:orientation="vertical"
+    tools:context=".activities.ChildDetailsActivity">
+
+    <TextView
+        android:id="@+id/text_screentime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="Screen Time"
+        android:textColor="@color/custom_blue3"
+        android:textSize="@dimen/text_size_24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/total_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_screentime" />
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/total_usage" />
+
+    <TextView
+        android:id="@+id/most_used_apps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Most used apps"
+        android:textSize="@dimen/text_size_16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pie_chart" />
+
+
+    <TextView
+        android:id="@+id/top1_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Application #1"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_1"
+        app:layout_constraintTop_toBottomOf="@+id/most_used_apps" />
+
+    <TextView
+        android:id="@+id/top5_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:text="Application #5"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_5"
+        app:layout_constraintTop_toBottomOf="@+id/top4_usage" />
+
+    <TextView
+        android:id="@+id/top4_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_4"
+        app:layout_constraintTop_toBottomOf="@+id/top4_app" />
+
+    <TextView
+        android:id="@+id/other_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_other"
+        app:layout_constraintTop_toBottomOf="@+id/other_app" />
+
+    <TextView
+        android:id="@+id/top3_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_3"
+        app:layout_constraintTop_toBottomOf="@+id/top3_app" />
+
+    <TextView
+        android:id="@+id/number_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="189dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_blue2"
+        android:text="#"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_5" />
+
+    <TextView
+        android:id="@+id/other_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:text="Other"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_other"
+        app:layout_constraintTop_toBottomOf="@+id/top5_usage" />
+
+    <TextView
+        android:id="@+id/top2_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_2"
+        app:layout_constraintTop_toBottomOf="@+id/top2_app" />
+
+    <TextView
+        android:id="@+id/top3_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:text="Application #3"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_3"
+        app:layout_constraintTop_toBottomOf="@+id/top2_usage" />
+
+    <TextView
+        android:id="@+id/number_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_blue2"
+        android:text="2"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_1" />
+
+    <TextView
+        android:id="@+id/number_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_blue2"
+        android:text="3"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_2" />
+
+    <TextView
+        android:id="@+id/top4_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Application #4"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_4"
+        app:layout_constraintTop_toBottomOf="@+id/most_used_apps" />
+
+    <TextView
+        android:id="@+id/number_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="190dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_blue2"
+        android:text="5"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_4" />
+
+    <TextView
+        android:id="@+id/number_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="190dp"
+        android:layout_marginTop="10dp"
+        android:text="4"
+        android:textColor="@color/custom_blue2"
+        android:textSize="40sp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/most_used_apps" />
+
+    <TextView
+        android:id="@+id/top2_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:text="Application #2"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_2"
+        app:layout_constraintTop_toBottomOf="@+id/top1_usage" />
+
+    <TextView
+        android:id="@+id/top5_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_5"
+        app:layout_constraintTop_toBottomOf="@+id/top5_app" />
+
+    <TextView
+        android:id="@+id/number_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/custom_blue2"
+        android:text="1"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/most_used_apps" />
+
+    <TextView
+        android:id="@+id/top1_usage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0 hr, 0 min"
+        android:textSize="@dimen/text_size_16sp"
+        app:layout_constraintStart_toEndOf="@+id/number_1"
+        app:layout_constraintTop_toBottomOf="@+id/top1_app" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

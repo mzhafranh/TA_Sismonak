@@ -19,6 +19,7 @@ import com.mzhtech.sismonakdev.R;
 import com.mzhtech.sismonakdev.fragments.ActivityLogFragment;
 import com.mzhtech.sismonakdev.fragments.AppsFragment;
 import com.mzhtech.sismonakdev.fragments.LocationFragment;
+import com.mzhtech.sismonakdev.fragments.StatFragment;
 import com.mzhtech.sismonakdev.models.App;
 
 import java.util.ArrayList;
@@ -93,6 +94,9 @@ public class ChildDetailsActivity extends AppCompatActivity {
 						selectedFragment = new AppsFragment();
 						//bundle.putParcelableArrayList(APPS_EXTRA, apps);  //not needed since we're sending it from
 						//selectedFragment.setArguments(bundle);            //the ParentSignedInActivity
+						break;
+					case R.id.navStat:
+						selectedFragment = new StatFragment();
 						break;
 					case R.id.navLocation:
 						selectedFragment = new LocationFragment();

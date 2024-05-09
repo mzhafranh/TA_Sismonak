@@ -51,6 +51,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -81,6 +82,8 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private Marker childMarker;
 
 	private Marker parentMarker;
+
+	private Polygon circle;
 	
 	@Nullable
 	@Override
@@ -119,7 +122,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			mapView.setMultiTouchControls(true);
 			
 			mapController = mapView.getController();
-			mapController.setZoom(18);
+			mapController.setZoom((double) 19);
 			
 			//Log.i(TAG, "onViewCreated: " + locationNewOverlay.getMyLocation());
 			//Log.i(TAG, "onViewCreated: " + locationNewOverlay.isMyLocationEnabled());
@@ -357,6 +360,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 							Location location = new Location(childLatitude, childLongitude, geoFenceDiameter, fenceCenterLatitude, fenceCenterLongitude, false, true);
 							databaseReference.child("childs").child(key).child("location").setValue(location);
 							startFencingService();
+							addCircleToMap(mapView, userLocation, geoFenceDiameter);
 							Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 						}
 					} else {
@@ -365,6 +369,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 						Location location = new Location(childLatitude, childLongitude, geoFenceDiameter, childLatitude, childLongitude, false, true);
 						databaseReference.child("childs").child(key).child("location").setValue(location);
 						startFencingService();
+						addCircleToMap(mapView, childLocation, geoFenceDiameter);
 						Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 					}
 					
@@ -407,6 +412,19 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	public void onCancel(int switchId) {
 		Toast.makeText(context, getString(R.string.canceled), Toast.LENGTH_SHORT).show();
 		
+	}
+
+	public void addCircleToMap(MapView mapView, Location centerLocation, double radius) {
+		GeoPoint center = new GeoPoint(centerLocation.getLatitude(), centerLocation.getLongitude());
+		mapView.getOverlays().remove(circle);
+		circle = new Polygon(mapView);    // Create a new polygon
+		circle.setPoints(Polygon.pointsAsCircle(center, radius/2));  // Set the circle's center and radius
+		circle.setFillColor(0x12121212);  // Set fill color with alpha for transparency
+		circle.setStrokeColor(0xFF3282b8);  // Set stroke color
+		circle.setStrokeWidth(3);  // Set stroke width
+
+		mapView.getOverlayManager().add(circle);  // Add the circle to the map overlays
+		mapView.invalidate();  // Refresh the map view to show the new overlay
 	}
 	
 }

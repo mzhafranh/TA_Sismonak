@@ -186,5 +186,8 @@
     <string name="would_you_love_to_add_a_profile_image">Would you like to add a profile image?</string>
     <string name="please_turn_on_the_gps">Please turn on the GPS on</string>
     <string name="you">You</string>
+    <string name="statistic">Statistic</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

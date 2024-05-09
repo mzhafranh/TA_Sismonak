@@ -286,6 +286,8 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 			if (!Validators.isValidEmail(txtParentEmail.getText().toString().toLowerCase()) || !validParent) {
 				txtParentEmail.setError(getString(R.string.this_email_isnt_registered_as_parent));
 				txtParentEmail.requestFocus();
+				Log.i("TAG", String.valueOf(!Validators.isValidEmail(txtParentEmail.getText().toString().toLowerCase())));
+
 				return false;
 			}
 		}
