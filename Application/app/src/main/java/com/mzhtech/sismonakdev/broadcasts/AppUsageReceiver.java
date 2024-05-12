@@ -43,87 +43,90 @@ public class AppUsageReceiver extends BroadcastReceiver {
         this.context = context;
         Log.i(TAG, "sampai onReceive");
 
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            // Code to handle data upload
-            Log.i(TAG, "sampai equal");
+        if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
 
-            String uid = user.getUid();
+            Calendar minuteCheck = Calendar.getInstance();
+            int minutes = minuteCheck.get(Calendar.MINUTE);
 
-            Log.i(TAG, "onReceive: AppUsageReceiver");
+            if (minutes == 0) {
 
-            UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-            Calendar calendar = Calendar.getInstance();
-            long endTime = calendar.getTimeInMillis();
-            calendar.add(Calendar.DATE, -1);
-            long startTime = calendar.getTimeInMillis();
+                String uid = user.getUid();
+
+                Log.i(TAG, "onReceive: AppUsageReceiver");
+
+                UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+                Calendar calendar = Calendar.getInstance();
+                long endTime = calendar.getTimeInMillis();
+                calendar.add(Calendar.DATE, -1);
+                long startTime = calendar.getTimeInMillis();
 
 
-            List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+                List<UsageStats> usageStatsList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
 
 
-            long totalAppDuration = 0;
-            PackageManager pm = context.getPackageManager();
+                long totalAppDuration = 0;
+                PackageManager pm = context.getPackageManager();
 
-            Map<String, Long> appUsageDurationMap = new HashMap<>();
-            if (usageStatsList != null && !usageStatsList.isEmpty()) {
-                for (UsageStats usageStats : usageStatsList) {
-                    if (!checkSystemApp(usageStats.getPackageName(), pm)) {
-                        long totalDuration = 0;
-                        totalDuration = appUsageDurationMap.getOrDefault(usageStats.getPackageName(), 0L);
-                        totalDuration += usageStats.getTotalTimeInForeground();
-                        appUsageDurationMap.put(usageStats.getPackageName(), totalDuration);
+                Map<String, Long> appUsageDurationMap = new HashMap<>();
+                if (usageStatsList != null && !usageStatsList.isEmpty()) {
+                    for (UsageStats usageStats : usageStatsList) {
+                        if (!checkSystemApp(usageStats.getPackageName(), pm)) {
+                            long totalDuration = 0;
+                            totalDuration = appUsageDurationMap.getOrDefault(usageStats.getPackageName(), 0L);
+                            totalDuration += usageStats.getTotalTimeInForeground();
+                            appUsageDurationMap.put(usageStats.getPackageName(), totalDuration);
+                        }
                     }
-                }
 
-                LinkedHashMap<String, Long> sortedMap = appUsageDurationMap.entrySet()
-                        .stream()
-                        .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                (e1, e2) -> e1, LinkedHashMap::new));
+                    LinkedHashMap<String, Long> sortedMap = appUsageDurationMap.entrySet()
+                            .stream()
+                            .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                            .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    Map.Entry::getValue,
+                                    (e1, e2) -> e1, LinkedHashMap::new));
 
-                for (Long value : sortedMap.values()) {
-                    totalAppDuration += value;
-                }
+                    for (Long value : sortedMap.values()) {
+                        totalAppDuration += value;
+                    }
 
-                List<Map.Entry<String, Long>> entryList = new ArrayList<>(sortedMap.entrySet());
-                long totalTop5Duration = 0;
+                    List<Map.Entry<String, Long>> entryList = new ArrayList<>(sortedMap.entrySet());
+                    long totalTop5Duration = 0;
 
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                String currentDate = formatter.format(new Date());
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                    String currentDate = formatter.format(new Date());
 
-                databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("totalAppDuration").setValue(totalAppDuration);
+                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("totalAppDuration").setValue(totalAppDuration);
 
-                if (entryList.size() > 0) {
-//                    top1_app.setText(entryList.get(0).getKey());
-//                    top1_usage.setText(formatDuration(entryList.get(0).getValue()));
-                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top1_app").setValue(getAppNameFromPackage(entryList.get(0).getKey(),pm));
-                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top1_usage").setValue(entryList.get(0).getValue());
-                    totalTop5Duration += entryList.get(0).getValue();
-                    if (entryList.size() > 1) {
-                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top2_app").setValue(getAppNameFromPackage(entryList.get(1).getKey(),pm));
-                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top2_usage").setValue(entryList.get(1).getValue());
-                        totalTop5Duration += entryList.get(1).getValue();
-                        if (entryList.size() > 2) {
-                            databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top3_app").setValue(getAppNameFromPackage(entryList.get(2).getKey(),pm));
-                            databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top3_usage").setValue(entryList.get(2).getValue());
-                            totalTop5Duration += entryList.get(2).getValue();
-                            if (entryList.size() > 3) {
-                                databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top4_app").setValue(getAppNameFromPackage(entryList.get(3).getKey(),pm));
-                                databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top4_usage").setValue(entryList.get(3).getValue());
-                                totalTop5Duration += entryList.get(3).getValue();
-                                if (entryList.size() > 4) {
-                                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top5_app").setValue(getAppNameFromPackage(entryList.get(4).getKey(),pm));
-                                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top5_usage").setValue(entryList.get(4).getValue());
-                                    totalTop5Duration += entryList.get(4).getValue();
+                    if (entryList.size() > 0) {
+    //                    top1_app.setText(entryList.get(0).getKey());
+    //                    top1_usage.setText(formatDuration(entryList.get(0).getValue()));
+                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top1_app").setValue(getAppNameFromPackage(entryList.get(0).getKey(), pm));
+                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top1_usage").setValue(entryList.get(0).getValue());
+                        totalTop5Duration += entryList.get(0).getValue();
+                        if (entryList.size() > 1) {
+                            databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top2_app").setValue(getAppNameFromPackage(entryList.get(1).getKey(), pm));
+                            databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top2_usage").setValue(entryList.get(1).getValue());
+                            totalTop5Duration += entryList.get(1).getValue();
+                            if (entryList.size() > 2) {
+                                databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top3_app").setValue(getAppNameFromPackage(entryList.get(2).getKey(), pm));
+                                databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top3_usage").setValue(entryList.get(2).getValue());
+                                totalTop5Duration += entryList.get(2).getValue();
+                                if (entryList.size() > 3) {
+                                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top4_app").setValue(getAppNameFromPackage(entryList.get(3).getKey(), pm));
+                                    databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top4_usage").setValue(entryList.get(3).getValue());
+                                    totalTop5Duration += entryList.get(3).getValue();
+                                    if (entryList.size() > 4) {
+                                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top5_app").setValue(getAppNameFromPackage(entryList.get(4).getKey(), pm));
+                                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top5_usage").setValue(entryList.get(4).getValue());
+                                        totalTop5Duration += entryList.get(4).getValue();
+                                        databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("other_usage").setValue(totalAppDuration - totalTop5Duration);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-
-                databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("other_usage").setValue(totalAppDuration - totalTop5Duration);
             }
         }
     }

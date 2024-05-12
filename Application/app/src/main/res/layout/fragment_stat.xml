@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:text="Screen Time"
+        android:text="@string/total_usage"
         android:textColor="@color/custom_blue3"
         android:textSize="@dimen/text_size_24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Most used apps"
+        android:text="@string/most_used_apps"
         android:textSize="@dimen/text_size_16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Application #1"
+        android:text="@string/no_app_data"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_1"
         app:layout_constraintTop_toBottomOf="@+id/most_used_apps" />
@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
-        android:text="Application #5"
+        android:text="@string/no_app_data"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_5"
         app:layout_constraintTop_toBottomOf="@+id/top4_usage" />
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_4"
         app:layout_constraintTop_toBottomOf="@+id/top4_app" />
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_other"
         app:layout_constraintTop_toBottomOf="@+id/other_app" />
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_3"
         app:layout_constraintTop_toBottomOf="@+id/top3_app" />
@@ -128,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
-        android:text="Other"
+        android:text="@string/other"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_other"
         app:layout_constraintTop_toBottomOf="@+id/top5_usage" />
@@ -138,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_2"
         app:layout_constraintTop_toBottomOf="@+id/top2_app" />
@@ -149,7 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
-        android:text="Application #3"
+        android:text="@string/no_app_data"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_3"
         app:layout_constraintTop_toBottomOf="@+id/top2_usage" />
@@ -184,7 +184,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Application #4"
+        android:text="@string/no_app_data"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_4"
         app:layout_constraintTop_toBottomOf="@+id/most_used_apps" />
@@ -220,7 +220,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="16dp"
-        android:text="Application #2"
+        android:text="@string/no_app_data"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_2"
         app:layout_constraintTop_toBottomOf="@+id/top1_usage" />
@@ -230,7 +230,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_5"
         app:layout_constraintTop_toBottomOf="@+id/top5_app" />
@@ -252,7 +252,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="0 hr, 0 min"
+        android:text="@string/default_time"
         android:textSize="@dimen/text_size_16sp"
         app:layout_constraintStart_toEndOf="@+id/number_1"
         app:layout_constraintTop_toBottomOf="@+id/top1_app" />

@@ -174,4 +174,13 @@
     <string name="please_turn_on_the_gps">Silakan aktifkan GPS</string>
     <string name="you">Anda</string>
     <string name="statistic">Statistik</string>
+    <string name="other">Lainnya</string>
+    <string name="total_usage">Total Penggunaan</string>
+    <string name="hour">jm</string>
+    <string name="minute">mnt</string>
+    <string name="default_time">0 jm, 0 mnt</string>
+    <string name="most_used_apps">Aplikasi paling digunakan</string>
+    <string name="no_app_data">Tidak ada data</string>
+    <string name="usage">Penggunaan</string>
+    <string name="graph">Grafik</string>
 </resources>

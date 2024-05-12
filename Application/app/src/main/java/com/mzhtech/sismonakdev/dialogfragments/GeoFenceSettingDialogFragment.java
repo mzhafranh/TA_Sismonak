@@ -3,6 +3,7 @@ package com.mzhtech.sismonakdev.dialogfragments;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class GeoFenceSettingDialogFragment extends DialogFragment {
 	
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		Log.i("GeoFenceSettingDialog", "Sampai GeoFenceSettingDialog onViewCreated");
 		getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		onGeoFenceSettingListener = (OnGeoFenceSettingListener) getTargetFragment();

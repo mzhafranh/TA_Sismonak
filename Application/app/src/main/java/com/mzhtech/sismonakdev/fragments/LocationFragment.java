@@ -72,6 +72,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private String childEmail;
 	private String childName;
 	private Context context;
+	private Context mContext;
 	private Activity activity;
 	private MyLocationNewOverlay locationNewOverlay;
 	private Location userLocation;
@@ -84,6 +85,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private Marker parentMarker;
 
 	private Polygon circle;
+	private boolean geoFenceActive;
 	
 	@Nullable
 	@Override
@@ -144,10 +146,6 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			layoutLocation = view.findViewById(R.id.layoutLocation);
 			layoutLocation.setVisibility(View.GONE);
 			
-			getData();
-			getUserLocation();
-			getChildLocation();
-			
 		}
 	}
 	
@@ -161,6 +159,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	
 	public void onResume() {
 		super.onResume();
+		Log.i(TAG, "onResume LocationFragment");
 		//this will refresh the osmdroid configuration on resuming.
 		//if you make changes to the configuration, use
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -170,14 +169,30 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	
 	public void onPause() {
 		super.onPause();
+		Log.i(TAG, "onPause LocationFragment");
 		//this will refresh the osmdroid configuration on resuming.
 		//if you make changes to the configuration, use
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Configuration.getInstance().save(context, prefs);
 		mapView.onPause();  //needed for compass, my location overlays, v6.0.0 and up
 	}
-	
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		getData();
+
+		getUserLocation();
+
+		getChildLocation();
+
+		checkGeoFence();
+
+	}
+
 	private void getData() {
+		Log.i(TAG, "getData");
 		Bundle bundle = getActivity().getIntent().getExtras();
 		if (bundle != null) {
 			childEmail = bundle.getString(CHILD_EMAIL_EXTRA);
@@ -186,30 +201,33 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	}
 	
 	private void getChildLocation() {
+		Log.i(TAG, "getChildLocation");
 		Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
 		query.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				Log.i(TAG, "onDataChange di getChildLocation");
 				if (dataSnapshot.exists()) {
-					DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
-					Child child = nodeShot.getValue(Child.class);
-					Location childLocation;
-					try {
-						childLocation = child.getLocation();
-						addMarkerForChild(childLocation);
-						progressbarLocationFragment.setVisibility(View.GONE);
-						txtNoLocation.setVisibility(View.GONE);
-						layoutLocation.setVisibility(View.VISIBLE);
-					} catch (NullPointerException e) {
-						startInformationDialogFragment();
-						progressbarLocationFragment.setVisibility(View.GONE);
-						txtNoLocation.setVisibility(View.VISIBLE);
-						String body = getString(R.string.no_location_history_found) + " " + childName;
-						txtNoLocation.setText(body);
-						layoutLocation.setVisibility(View.GONE);
-						
+					if(isAdded()){
+						DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
+						Child child = nodeShot.getValue(Child.class);
+						Location childLocation;
+						try {
+							childLocation = child.getLocation();
+							addMarkerForChild(childLocation);
+							progressbarLocationFragment.setVisibility(View.GONE);
+							txtNoLocation.setVisibility(View.GONE);
+							layoutLocation.setVisibility(View.VISIBLE);
+						} catch (NullPointerException e) {
+							startInformationDialogFragment();
+							progressbarLocationFragment.setVisibility(View.GONE);
+							txtNoLocation.setVisibility(View.VISIBLE);
+							String body = getContext().getString(R.string.no_location_history_found) + " " + childName;
+							txtNoLocation.setText(body);
+							layoutLocation.setVisibility(View.GONE);
+
+						}
 					}
-					
 				}
 			}
 			
@@ -224,10 +242,14 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private void startInformationDialogFragment() {
 		InformationDialogFragment informationDialogFragment = new InformationDialogFragment();
 		Bundle bundle = new Bundle();
-		bundle.putString(Constant.INFORMATION_MESSAGE, getString(R.string.please_turn_on_the_gps) + " " + childName + getString(R.string.s_device));
-		informationDialogFragment.setArguments(bundle);
-		informationDialogFragment.setCancelable(false);
-		informationDialogFragment.show(getFragmentManager(), Constant.INFORMATION_DIALOG_FRAGMENT_TAG);
+		if (getContext() != null) {
+			bundle.putString(Constant.INFORMATION_MESSAGE, context.getString(R.string.please_turn_on_the_gps) + " " + childName + context.getString(R.string.s_device));
+			informationDialogFragment.setArguments(bundle);
+			informationDialogFragment.setCancelable(false);
+			informationDialogFragment.show(requireFragmentManager(), Constant.INFORMATION_DIALOG_FRAGMENT_TAG);
+		} else {
+
+		}
 	}
 	
 	
@@ -275,6 +297,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	}
 	
 	private void getUserLocation() {
+		Log.i(TAG, "getUserLocation");
 		LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
 		LocationListener locationListener = new LocationListener() {
 			@Override
@@ -351,6 +374,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 					
 					if (geoFenceCenter.equals(getString(R.string.you))) {
 						if (userLocation == null || !Validators.isLocationOn(context)) {
+							Log.i(TAG, "userLocation Null");
 							startPermissionExplanationDialogFragment();
 						} else {
 							double fenceCenterLatitude = userLocation.getLatitude();
@@ -360,7 +384,8 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 							Location location = new Location(childLatitude, childLongitude, geoFenceDiameter, fenceCenterLatitude, fenceCenterLongitude, false, true);
 							databaseReference.child("childs").child(key).child("location").setValue(location);
 							startFencingService();
-							addCircleToMap(mapView, userLocation, geoFenceDiameter);
+//							addCircleToMap(mapView, userLocation, geoFenceDiameter);
+							checkGeoFence();
 							Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 						}
 					} else {
@@ -369,7 +394,8 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 						Location location = new Location(childLatitude, childLongitude, geoFenceDiameter, childLatitude, childLongitude, false, true);
 						databaseReference.child("childs").child(key).child("location").setValue(location);
 						startFencingService();
-						addCircleToMap(mapView, childLocation, geoFenceDiameter);
+//						addCircleToMap(mapView, childLocation, geoFenceDiameter);
+						checkGeoFence();
 						Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 					}
 					
@@ -426,5 +452,48 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		mapView.getOverlayManager().add(circle);  // Add the circle to the map overlays
 		mapView.invalidate();  // Refresh the map view to show the new overlay
 	}
-	
+
+	public void checkGeoFence(){
+		Log.i(TAG, "checkGeoFence");
+		Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
+		query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				String childId = "";
+				for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+					childId = childSnapshot.getKey(); // This is your dynamic ID like "CxZiHIcM7tW52aOYtPJuTWwBpAf1"
+					Log.d("Firebase", "Child ID: " + childId);
+				}
+				DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+						.child("users")
+						.child("childs")
+						.child(childId)
+						.child("location");
+				ref.addListenerForSingleValueEvent(new ValueEventListener() {
+					@Override
+					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+						if (dataSnapshot.child("geoFence").getValue(Boolean.class) == true){
+//							onGeoFenceSet("Child", dataSnapshot.child("fenceDiameter").getValue(Long.class));
+							Location centerLocation = new Location();
+							centerLocation.setLatitude(dataSnapshot.child("fenceCenterLatitude").getValue(Double.class));
+							centerLocation.setLongitude(dataSnapshot.child("fenceCenterLongitude").getValue(Double.class));
+							addCircleToMap(mapView, centerLocation, dataSnapshot.child("fenceDiameter").getValue(Double.class));
+						}
+					}
+
+					@Override
+					public void onCancelled(@NonNull DatabaseError databaseError) {
+
+					}
+				});
+
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
+	}
 }

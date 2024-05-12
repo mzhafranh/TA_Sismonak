@@ -116,10 +116,12 @@ public class StatFragment extends Fragment {
 
 
     private String formatDuration(long duration) {
+        String hour_string = getContext().getString(R.string.hour);
+        String minute_string = getContext().getString(R.string.minute);
         long minutes = (duration / 1000) / 60;
         long hours = minutes / 60;
         minutes = minutes % 60;
-        return String.format("%d hr %02d min", hours, minutes);
+        return String.format("%d %s %02d %s", hours, hour_string, minutes, minute_string);
     }
 
 //    private void initializeChart() {
@@ -172,7 +174,7 @@ public class StatFragment extends Fragment {
         PieData pieData = new PieData(pieDataSet);
         pie_chart.setData(pieData);
         pie_chart.getDescription().setEnabled(false);
-        pie_chart.setCenterText("Usage");
+//        pie_chart.setCenterText(getContext().getString(R.string.graph));
         pie_chart.setCenterTextSize(16f);
         pie_chart.setUsePercentValues(true);
         pie_chart.getLegend().setEnabled(false);
@@ -207,22 +209,30 @@ public class StatFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
                             top1_app.setText(dataSnapshot.child("top1_app").getValue(String.class));
-                            top2_app.setText(dataSnapshot.child("top2_app").getValue(String.class));
-                            top3_app.setText(dataSnapshot.child("top3_app").getValue(String.class));
-                            top4_app.setText(dataSnapshot.child("top4_app").getValue(String.class));
-                            top5_app.setText(dataSnapshot.child("top5_app").getValue(String.class));
                             top1_usage.setText(formatDuration(dataSnapshot.child("top1_usage").getValue(Long.class)));
                             usage.set(0,dataSnapshot.child("top1_usage").getValue(Long.class));
-                            top2_usage.setText(formatDuration(dataSnapshot.child("top2_usage").getValue(Long.class)));
-                            usage.set(1,dataSnapshot.child("top2_usage").getValue(Long.class));
-                            top3_usage.setText(formatDuration(dataSnapshot.child("top3_usage").getValue(Long.class)));
-                            usage.set(2,dataSnapshot.child("top3_usage").getValue(Long.class));
-                            top4_usage.setText(formatDuration(dataSnapshot.child("top4_usage").getValue(Long.class)));
-                            usage.set(3,dataSnapshot.child("top4_usage").getValue(Long.class));
-                            top5_usage.setText(formatDuration(dataSnapshot.child("top5_usage").getValue(Long.class)));
-                            usage.set(4,dataSnapshot.child("top5_usage").getValue(Long.class));
-                            other_usage.setText(formatDuration(dataSnapshot.child("other_usage").getValue(Long.class)));
-                            usage.set(5,dataSnapshot.child("other_usage").getValue(Long.class));
+                            if (dataSnapshot.child("top2_app").exists()){
+                                top2_app.setText(dataSnapshot.child("top2_app").getValue(String.class));
+                                top2_usage.setText(formatDuration(dataSnapshot.child("top2_usage").getValue(Long.class)));
+                                usage.set(1,dataSnapshot.child("top2_usage").getValue(Long.class));
+                                if (dataSnapshot.child("top3_app").exists()) {
+                                    top3_app.setText(dataSnapshot.child("top3_app").getValue(String.class));
+                                    top3_usage.setText(formatDuration(dataSnapshot.child("top3_usage").getValue(Long.class)));
+                                    usage.set(2,dataSnapshot.child("top3_usage").getValue(Long.class));
+                                    if (dataSnapshot.child("top4_app").exists()) {
+                                        top4_app.setText(dataSnapshot.child("top4_app").getValue(String.class));
+                                        top4_usage.setText(formatDuration(dataSnapshot.child("top4_usage").getValue(Long.class)));
+                                        usage.set(3,dataSnapshot.child("top4_usage").getValue(Long.class));
+                                        if (dataSnapshot.child("top5_app").exists()){
+                                            top5_app.setText(dataSnapshot.child("top5_app").getValue(String.class));
+                                            top5_usage.setText(formatDuration(dataSnapshot.child("top5_usage").getValue(Long.class)));
+                                            usage.set(4,dataSnapshot.child("top5_usage").getValue(Long.class));
+                                            other_usage.setText(formatDuration(dataSnapshot.child("other_usage").getValue(Long.class)));
+                                            usage.set(5,dataSnapshot.child("other_usage").getValue(Long.class));
+                                        }
+                                    }
+                                }
+                            }
                             total_usage.setText(formatDuration(dataSnapshot.child("totalAppDuration").getValue(Long.class)));
                             updateChart(usage);
                         }
