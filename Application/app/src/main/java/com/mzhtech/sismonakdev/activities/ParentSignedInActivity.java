@@ -1,6 +1,8 @@
 package com.mzhtech.sismonakdev.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,22 +71,60 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 	private String childEmail;
+
+	private static final int REQUEST_CODE_PERMISSIONS = 101;
+	private static final String[] REQUIRED_PERMISSIONS = new String[] {
+			Manifest.permission.WRITE_EXTERNAL_STORAGE,
+			Manifest.permission.READ_EXTERNAL_STORAGE,
+			Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.ACCESS_COARSE_LOCATION
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_parent_signed_in);
+
+		if (!allPermissionsGranted()) {
+			ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+		} else {
+			continueApp();
+		}
 		
+	}
+
+	private boolean allPermissionsGranted() {
+		for (String permission : REQUIRED_PERMISSIONS) {
+			if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if (requestCode == REQUEST_CODE_PERMISSIONS) {
+			if (allPermissionsGranted()) {
+				continueApp();
+			} else {
+				Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
+				finish();
+			}
+		}
+	}
+
+	public void continueApp(){
 		auth = FirebaseAuth.getInstance();
 		user = auth.getCurrentUser();
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		
+
 		imgParent = findViewById(R.id.imgParent);
 		txtParentName = findViewById(R.id.txtParentName);
 		//txtChildCount = findViewById(R.id.txtChildCount);
 		linearLayout = findViewById(R.id.linearLayoutParentSignedInActivity);
-		
+
 		toolbar = findViewById(R.id.toolbar);
 		progressBar = findViewById(R.id.progressBarParentSignedInActivity);
 		progressBar.setVisibility(View.VISIBLE);
@@ -100,9 +142,9 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 		});
 		txtTitle = findViewById(R.id.txtTitle);
 		txtTitle.setText(getString(R.string.home));
-		
+
 		txtNoKids = findViewById(R.id.txtNoKids);
-		
+
 		recyclerViewChilds = findViewById(R.id.recyclerViewChilds);
 		recyclerViewChilds.setHasFixedSize(true);
 		recyclerViewChilds.setLayoutManager(new LinearLayoutManager(this));
@@ -111,9 +153,8 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 		Log.i(TAG, "onCreate: user:" + user.getUid());
 		getChilds(parentEmail);
 		getParentData(parentEmail);
-		
 	}
-	
+
 	public void getChilds(String parentEmail) {
 		Query query = databaseReference.child("childs").orderByChild("parentEmail").equalTo(parentEmail);
 		query.addValueEventListener(new ValueEventListener() {

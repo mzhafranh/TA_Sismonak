@@ -243,7 +243,7 @@ public class MainForegroundService extends Service {
 		registerReceiver(appRemovedReceiver, appRemovedIntentFilter);
 
 		appUsageReceiver = new AppUsageReceiver(user);
-		IntentFilter appUsageIntentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+		IntentFilter appUsageIntentFilter = new IntentFilter(Intent.ACTION_TIME_TICK);
 		registerReceiver(appUsageReceiver, appUsageIntentFilter);
 
         /*screenTimeReceiver = new ScreenTimeReceiver(user);
@@ -585,7 +585,7 @@ public class MainForegroundService extends Service {
 				if (apps != null) {
 					
 					String foregroundAppPackageName = getTopAppPackageName();
-					Log.i(TAG, "run: foreground app: " + foregroundAppPackageName);
+//					Log.i(TAG, "run: foreground app: " + foregroundAppPackageName);
 					
 					//TODO:: need to handle com.google.android.gsf &  com.sec.android.provider.badge
 					for (final App app : apps) {

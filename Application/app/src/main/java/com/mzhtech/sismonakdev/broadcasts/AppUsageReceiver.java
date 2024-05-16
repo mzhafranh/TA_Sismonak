@@ -42,11 +42,14 @@ public class AppUsageReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         Log.i(TAG, "sampai onReceive");
+        Calendar minuteCheck = Calendar.getInstance();
+        int minutes = minuteCheck.get(Calendar.MINUTE);
+        Log.i(TAG, "minutes " + String.valueOf(minutes));
 
         if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
 
-            Calendar minuteCheck = Calendar.getInstance();
-            int minutes = minuteCheck.get(Calendar.MINUTE);
+//            Calendar minuteCheck = Calendar.getInstance();
+//            int minutes = minuteCheck.get(Calendar.MINUTE);
 
             if (minutes == 0) {
 
