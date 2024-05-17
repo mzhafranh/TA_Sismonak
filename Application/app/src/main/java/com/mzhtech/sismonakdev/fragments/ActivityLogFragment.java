@@ -33,6 +33,7 @@ public class ActivityLogFragment extends Fragment {
 		//getData();
 		super.onViewCreated(view, savedInstanceState);
 
+		Log.i(TAG, "sampai onViewCreated ActivityLogFragment");
 		ViewPager viewPager = view.findViewById(R.id.activityLogViewPager);
 		viewPager.setAdapter(setupActivityLogFragmentPagerAdapter());
 		

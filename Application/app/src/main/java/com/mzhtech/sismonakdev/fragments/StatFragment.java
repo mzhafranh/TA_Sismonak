@@ -153,19 +153,19 @@ public class StatFragment extends Fragment {
 
     private void updateChart(ArrayList<Long> usage) {
         ArrayList<PieEntry> durations = new ArrayList<>();
-        durations.add(new PieEntry(usage.get(0), "#1"));
-        durations.add(new PieEntry(usage.get(1), "#2"));
-        durations.add(new PieEntry(usage.get(2), "#3"));
-        durations.add(new PieEntry(usage.get(3), "#4"));
-        durations.add(new PieEntry(usage.get(4), "#5"));
-        durations.add(new PieEntry(usage.get(5), "Other"));
+        durations.add(new PieEntry(usage.get(0), ""));
+        durations.add(new PieEntry(usage.get(1), ""));
+        durations.add(new PieEntry(usage.get(2), ""));
+        durations.add(new PieEntry(usage.get(3), ""));
+        durations.add(new PieEntry(usage.get(4), ""));
+        durations.add(new PieEntry(usage.get(5), ""));
 
         PieDataSet pieDataSet = new PieDataSet(durations, "");
         pieDataSet.setColors(new int[]{Color.rgb(69, 181, 255), Color.rgb(64, 168, 237), Color.rgb(55, 144, 204), Color.rgb(46, 121, 171), Color.rgb(40, 105, 148), Color.rgb(34, 88, 125)});
         pieDataSet.setValueTextColor(Color.BLACK);
         pieDataSet.setValueTextSize(16f);
-        pieDataSet.setValueFormatter(new CustomValueFormatter(10.0f));
-        pieDataSet.setDrawValues(false);
+        pieDataSet.setValueFormatter(new CustomValueFormatter(5.0f));
+//        pieDataSet.setDrawValues(false);
 //        pieDataSet.setValueLinePart1OffsetPercentage(80.f);
 //        pieDataSet.setValueLinePart1Length(0.4f);
 //        pieDataSet.setValueLinePart2Length(0.4f);

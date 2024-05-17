@@ -27,6 +27,8 @@ public class PhoneStateReceiver extends BroadcastReceiver {
 	private double startCallTime;
 	private double endCallTime;
 	private Call call;
+
+	private boolean isCallActive = false;
 	
 	public PhoneStateReceiver(FirebaseUser user) {
 		this.user = user;
@@ -69,6 +71,8 @@ public class PhoneStateReceiver extends BroadcastReceiver {
                 call.setCallTime(callTime);*/
 				
 				call = new Call(Constant.INCOMING_CALL, phoneNumber, contactName, callTime, null);
+
+				isCallActive = true;
 				
 			} else if (phoneState.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)) {
 				startCallTime = System.currentTimeMillis();
@@ -87,18 +91,22 @@ public class PhoneStateReceiver extends BroadcastReceiver {
                 call.setCallTime(callTime);*/
 				
 				call = new Call(Constant.OUTGOING_CALL, phoneNumber, contactName, callTime, null);
-				
-				
+
+				isCallActive = true;
+
+
 			} else if (phoneState.equals(TelephonyManager.EXTRA_STATE_IDLE)) {
-				endCallTime = System.currentTimeMillis();
-				double callDuration = (endCallTime - startCallTime) / 1000;
+				if (isCallActive) {
+					endCallTime = System.currentTimeMillis();
+					double callDuration = (endCallTime - startCallTime) / 1000;
 
                 /*calls.put("callDurationInSeconds", String.valueOf(callDuration));
                 databaseReference.child("childs").child(uid).child("calls").push().setValue(calls);*/
-				
-				call.setCallDurationInSeconds(String.valueOf(callDuration));
-				databaseReference.child("childs").child(uid).child("calls").push().setValue(call);
-				//TODO:: written 4 times
+
+					call.setCallDurationInSeconds(String.valueOf(callDuration));
+					databaseReference.child("childs").child(uid).child("calls").push().setValue(call);
+					isCallActive = false;
+				}
 				
 			}
 			

@@ -55,32 +55,18 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 		super.onViewCreated(view, savedInstanceState);
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		getData();
 		Log.i(TAG, "sampai onViewCreated callsFragment");
 		recyclerViewCalls = view.findViewById(R.id.recyclerViewCalls);
 		txtNoCalls = view.findViewById(R.id.txtNoCalls);
-		
-		if (callsList.isEmpty()) {
-			txtNoCalls.setVisibility(View.VISIBLE);
-			recyclerViewCalls.setVisibility(View.GONE);
-		} else {
-			txtNoCalls.setVisibility(View.GONE);
-			recyclerViewCalls.setVisibility(View.VISIBLE);
-			recyclerViewCalls.setHasFixedSize(true);
-			recyclerViewCalls.setLayoutManager(new LinearLayoutManager(getContext()));
-			
-			Collections.sort(callsList, Collections.<Call>reverseOrder());  //descending order
-			initializeAdapter(callsList/*, this*/);
-			initializeItemTouchHelper();
-		}
+		getData();
 	}
 
-//	@Override
-//	public void onResume() {
-//		super.onResume();
-//		Log.i(TAG, "sampai onResume callsFragment");
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.i(TAG, "sampai onResume callsFragment");
 //		getData();
-//	}
+	}
 
 	private void getData() {
 		Bundle bundle = getActivity().getIntent().getExtras();
@@ -88,6 +74,20 @@ public class CallsFragment extends Fragment /*implements OnCallDeleteClickListen
 			calls = (HashMap<String, Call>) bundle.getSerializable(CHILD_CALLS_EXTRA);
 			callsList = new ArrayList<>(calls.values());
 			childEmail = bundle.getString(CHILD_EMAIL_EXTRA);
+
+			if (callsList.isEmpty()) {
+				txtNoCalls.setVisibility(View.VISIBLE);
+				recyclerViewCalls.setVisibility(View.GONE);
+			} else {
+				txtNoCalls.setVisibility(View.GONE);
+				recyclerViewCalls.setVisibility(View.VISIBLE);
+				recyclerViewCalls.setHasFixedSize(true);
+				recyclerViewCalls.setLayoutManager(new LinearLayoutManager(getContext()));
+
+				Collections.sort(callsList, Collections.<Call>reverseOrder());  //descending order
+				initializeAdapter(callsList/*, this*/);
+				initializeItemTouchHelper();
+			}
 		}
 	}
 	
