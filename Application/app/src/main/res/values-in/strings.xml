@@ -141,7 +141,7 @@
     <string name="setup_geo_fence_on">Siapkan Geo-Fence di</string>
     <string name="please_download_google_play_services">Silakan unduh layanan google play</string>
     <string name="stop">Berhenti</string>
-    <string name="is_out_of_the_fence">di luar pagar</string>
+    <string name="is_out_of_the_fence">pergi keluar pagar</string>
     <string name="cant_start_the_fence_without_your_location">Harap aktifkan lokasi Anda, kami tidak dapat memulai pagar di sekitar Anda tanpa lokasi tersebut</string>
     <string name="no_location_history_found">Tidak ditemukan riwayat lokasi untuk</string>
     <string name="center">Pusat:</string>

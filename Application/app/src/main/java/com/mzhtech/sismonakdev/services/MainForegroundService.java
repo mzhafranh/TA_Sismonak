@@ -82,14 +82,18 @@ public class MainForegroundService extends Service {
 	private String childEmail;
 	private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 	private DatabaseReference databaseReference = firebaseDatabase.getReference("users");
-	
-	
+	private LocationListener locationListener;
+	private LocationManager locationManager;
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		executorService = Executors.newSingleThreadExecutor();
 		ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+
 		LockerThread thread = new LockerThread();
+
 		executorService.submit(thread);
 		new Thread(new Runnable() {
 			@Override
@@ -115,7 +119,7 @@ public class MainForegroundService extends Service {
 		
 		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
 				//.setContentTitle(notificationContent)
-				.setSmallIcon(R.drawable.ic_kidsafe).setContentIntent(pendingIntent).build();
+				.setSmallIcon(R.drawable.sismonak_notification).setContentIntent(pendingIntent).build();
 		
 		startForeground(NOTIFICATION_ID, notification);
 		
@@ -320,8 +324,8 @@ public class MainForegroundService extends Service {
 			@Override
 			public void onLocationChanged(Location location) {
 				if (location != null) {
-					Log.i(TAG, "onLocationChanged: latitude: " + location.getLatitude());
-					Log.i(TAG, "onLocationChanged: longitude: " + location.getLongitude());
+//					Log.i(TAG, "onLocationChanged: latitude: " + location.getLatitude());
+//					Log.i(TAG, "onLocationChanged: longitude: " + location.getLongitude());
 					addUserLocationToDatabase(location, uid);
 				} else {
 					Log.i(TAG, "onLocationChanged: location is null");
@@ -369,54 +373,82 @@ public class MainForegroundService extends Service {
 	}
 	
 	private void setFence(DataSnapshot dataSnapshot) {
-		final com.mzhtech.sismonakdev.models.Location childLocation = dataSnapshot.getValue(com.mzhtech.sismonakdev.models.Location.class);
-		Log.i(TAG, "setFence: getLatitude " + childLocation.getLatitude());
-		Log.i(TAG, "setFence: getLongitude " + childLocation.getLongitude());
-		Log.i(TAG, "setFence: isGeoFence " + childLocation.isGeoFence());
-		Log.i(TAG, "setFence: isOutOfFence " + childLocation.isOutOfFence());
-		Log.i(TAG, "setFence: getFenceCenterLatitude " + childLocation.getFenceCenterLatitude());
-		Log.i(TAG, "setFence: getFenceCenterLongitude " + childLocation.getFenceCenterLongitude());
-		Log.i(TAG, "setFence: getFenceDiameter " + childLocation.getFenceDiameter());
-		
+		com.mzhtech.sismonakdev.models.Location childLocation = dataSnapshot.getValue(com.mzhtech.sismonakdev.models.Location.class);
+//		Log.i(TAG, "setFence: getLatitude " + childLocation.getLatitude());
+//		Log.i(TAG, "setFence: getLongitude " + childLocation.getLongitude());
+//		Log.i(TAG, "setFence: isGeoFence " + childLocation.isGeoFence());
+//		Log.i(TAG, "setFence: isOutOfFence " + childLocation.isOutOfFence());
+//		Log.i(TAG, "setFence: getFenceCenterLatitude " + childLocation.getFenceCenterLatitude());
+//		Log.i(TAG, "setFence: getFenceCenterLongitude " + childLocation.getFenceCenterLongitude());
+//		Log.i(TAG, "setFence: getFenceDiameter " + childLocation.getFenceDiameter());
+
+		Log.i(TAG, "setFence: before if isGeoFence");
+
 		if (childLocation.isGeoFence()) {
-			Log.i(TAG, "setFence: true");
-			LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-			LocationListener locationListener = new LocationListener() {
-				@Override
-				public void onLocationChanged(Location location) {
-					Log.i(TAG, "setFence: changed");
-					if (location != null) {
-						float[] distanceInMeters = new float[1];
-						Location.distanceBetween(childLocation.getFenceCenterLatitude(), childLocation.getFenceCenterLongitude(), location.getLatitude(), location.getLongitude(), distanceInMeters);
-						
-						boolean outOfFence = distanceInMeters[0] > childLocation.getFenceDiameter();
-						if (outOfFence) {
-							Log.i(TAG, "setFence: OUT OF FENCE");
-							databaseReference.child("childs").child(uid).child("location").child("outOfFence").setValue(true);
-						} else {
-							databaseReference.child("childs").child(uid).child("location").child("outOfFence").setValue(false);
-						}
-					} else {
-						Log.i(TAG, "setFence: location is null");
+			Log.i(TAG, "setFence: isGeoFence true");
+
+			if (locationManager == null && locationListener == null){
+				locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+				locationListener = new LocationListener() {
+					@Override
+					public void onLocationChanged(Location location) {
+						Log.i(TAG, "setFence: onLocationChanged");
+
+						Query childLocationQuery = databaseReference.child("childs").child(uid).child("location");
+
+						childLocationQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+							@Override
+							public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+								childLocation.setLongitude(dataSnapshot.child("longitude").getValue(Double.class));
+								childLocation.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
+								childLocation.setFenceCenterLatitude(dataSnapshot.child("fenceCenterLatitude").getValue(Double.class));
+								childLocation.setFenceCenterLongitude(dataSnapshot.child("fenceCenterLongitude").getValue(Double.class));
+								childLocation.setFenceDiameter(dataSnapshot.child("fenceDiameter").getValue(Double.class));
+								childLocation.setGeoFence(dataSnapshot.child("geoFence").getValue(Boolean.class));
+
+								if (location != null && childLocation.isGeoFence()) {
+									float[] distanceInMeters = new float[1];
+									Location.distanceBetween(childLocation.getFenceCenterLatitude(), childLocation.getFenceCenterLongitude(), location.getLatitude(), location.getLongitude(), distanceInMeters);
+
+									Log.i(TAG, "Distance in Meters " + String.valueOf(distanceInMeters[0]));
+									Log.i(TAG, "Fence Diameter " + String.valueOf(childLocation.getFenceDiameter()));
+
+									boolean outOfFence = distanceInMeters[0] > childLocation.getFenceDiameter();
+									if (outOfFence) {
+										Log.i(TAG, "setFence: OUT OF FENCE");
+										databaseReference.child("childs").child(uid).child("location").child("outOfFence").setValue(true);
+									} else {
+										databaseReference.child("childs").child(uid).child("location").child("outOfFence").setValue(false);
+									}
+								} else {
+									Log.i(TAG, "setFence: location is null");
+								}
+							}
+
+							@Override
+							public void onCancelled(@NonNull DatabaseError databaseError) {
+
+							}
+						});
 					}
-				}
-				
-				@Override
-				public void onStatusChanged(String provider, int status, Bundle extras) {
-				
-				}
-				
-				@Override
-				public void onProviderEnabled(String provider) {
-				
-				}
-				
-				@Override
-				public void onProviderDisabled(String provider) {
-				
-				}
-			};
-			
+
+					@Override
+					public void onStatusChanged(String provider, int status, Bundle extras) {
+
+					}
+
+					@Override
+					public void onProviderEnabled(String provider) {
+
+					}
+
+					@Override
+					public void onProviderDisabled(String provider) {
+
+					}
+				};
+			}
+
 			//these two statements will be only executed when the permission is granted.
 			if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 				

@@ -3,6 +3,8 @@ package com.mzhtech.sismonakdev;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.os.Build;
 
 public class NotificationChannelCreator extends Application {
@@ -18,7 +20,7 @@ public class NotificationChannelCreator extends Application {
 	private void createNotificationChannel() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			NotificationChannel serviceChannel = new NotificationChannel(CHANNEL_ID, "Service Channel", NotificationManager.IMPORTANCE_LOW);
-			
+
 			NotificationManager notificationManager = getSystemService(NotificationManager.class);
 			notificationManager.createNotificationChannel(serviceChannel);
 		}

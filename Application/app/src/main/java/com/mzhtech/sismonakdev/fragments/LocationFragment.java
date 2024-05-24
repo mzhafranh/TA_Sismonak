@@ -304,7 +304,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			public void onLocationChanged(android.location.Location location) {
 				if (location != null) {
 					userLocation = new Location(location.getLatitude(), location.getLongitude());
-					Log.i(TAG, "onLocationChanged: location lat: " + location.getLatitude() + "location long: " + location.getLongitude());
+//					Log.i(TAG, "onLocationChanged: location lat: " + location.getLatitude() + "location long: " + location.getLongitude());
 					addMarkerForParent(userLocation);
 				}
 			}
@@ -444,7 +444,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		GeoPoint center = new GeoPoint(centerLocation.getLatitude(), centerLocation.getLongitude());
 		mapView.getOverlays().remove(circle);
 		circle = new Polygon(mapView);    // Create a new polygon
-		circle.setPoints(Polygon.pointsAsCircle(center, radius/2));  // Set the circle's center and radius
+		circle.setPoints(Polygon.pointsAsCircle(center, radius));  // Set the circle's center and radius
 		circle.setFillColor(0x12121212);  // Set fill color with alpha for transparency
 		circle.setStrokeColor(0xFF3282b8);  // Set stroke color
 		circle.setStrokeWidth(3);  // Set stroke width

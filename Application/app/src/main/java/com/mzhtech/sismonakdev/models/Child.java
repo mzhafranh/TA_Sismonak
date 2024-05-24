@@ -95,4 +95,5 @@ public class Child extends User {
 	public void setAppDeleted(boolean appDeleted) {
 		this.appDeleted = appDeleted;
 	}
+
 }

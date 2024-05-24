@@ -1,9 +1,14 @@
 package com.mzhtech.sismonakdev.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,44 +33,59 @@ public class GeoFencingForegroundService extends Service {
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 	private String lastChildEmail = null;
-	
+//	public static final String CHANNEL_ID = "GeoFencingAlertsChannel";
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			NotificationChannel channel = new NotificationChannel(
+					"GeoFencingAlertsChannel",
+					"GeoFencing Alerts",
+					NotificationManager.IMPORTANCE_HIGH
+			);
+			channel.setDescription("Channel for GeoFencing alerts");
+			channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),
+					new AudioAttributes.Builder()
+							.setUsage(AudioAttributes.USAGE_NOTIFICATION)
+							.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+							.build());
+			NotificationManager notificationManager = getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(channel);
+		}
 	}
-	
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		
+
 		final String childEmail = intent.getStringExtra(Constant.CHILD_EMAIL_EXTRA);
 		final String childName = intent.getStringExtra(Constant.CHILD_NAME_EXTRA);
 		String notificationContent = "GeoFencing " + childName;
 		if (childEmail != null) lastChildEmail = childEmail;
-		
+
 		if (intent.getAction() != null) {
 			if (intent.getAction().equals(Constant.ACTION_STOP_GEO_FENCING_SERVICE)) {
 				closeFencingService();
 				Log.i(TAG, "onStartCommand: lastEmail: " + lastChildEmail);
 			}
 		}
-		
+
 		Intent notificationIntent = new Intent(this, ParentSignedInActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-		
+
 		Intent stopIntent = new Intent(this, GeoFencingForegroundService.class);
 		stopIntent.setAction(Constant.ACTION_STOP_GEO_FENCING_SERVICE);
 		PendingIntent stopPendingIntent = PendingIntent.getService(this, Constant.GEO_FENCING_SERVICE_REQUEST_CODE, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-		
-		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle(notificationContent).setSmallIcon(R.drawable.ic_kidsafe).addAction(R.drawable.ic_cancel, getString(R.string.stop), stopPendingIntent).setContentIntent(pendingIntent).build();
-		
+
+		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle(notificationContent).setSmallIcon(R.drawable.sismonak_notification).addAction(R.drawable.ic_cancel, getString(R.string.stop), stopPendingIntent).setContentIntent(pendingIntent).build();
+
 		startForeground(Constant.GEO_FENCING_NOTIFICATION_ID, notification);
-		
-		
+
+
 		Log.i(TAG, "onStartCommand: service started");
-		
+
 		Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
 		query.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
@@ -77,55 +97,61 @@ public class GeoFencingForegroundService extends Service {
 					geoFencingQuery.addValueEventListener(new ValueEventListener() {
 						@Override
 						public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-							Log.i(TAG, "onDataChange: value: " + dataSnapshot.getValue());
-							if (dataSnapshot.exists()) showNotification(dataSnapshot, childName);
+							Log.i(TAG, "outOfFence: value: " + dataSnapshot.getValue());
+							if (dataSnapshot.getValue(Boolean.class)) showNotification(dataSnapshot, childName);
 						}
-						
+
 						@Override
 						public void onCancelled(@NonNull DatabaseError databaseError) {
-						
+
 						}
 					});
 				}
 			}
-			
+
 			@Override
 			public void onCancelled(@NonNull DatabaseError databaseError) {
-			
+
 			}
 		});
-		
+
 		return START_REDELIVER_INTENT;  //so the intent wouldn't be a null
 	}
-	
-	
+
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 	}
-	
-	
+
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
-	
-	
+
+
 	private void showNotification(DataSnapshot dataSnapshot, String childName) {
 		Log.i(TAG, "showNotification: key: " + dataSnapshot.getKey());
 		Log.i(TAG, "showNotification: value: " + dataSnapshot.getValue());
 		//Log.i(TAG, "showNotification: children: " + dataSnapshot.getChildren());
 		//Log.i(TAG, "showNotification: childrenCount" + dataSnapshot.getChildrenCount());
-		
-		//TODO:: show a notification instead
-		
-		if ((boolean) dataSnapshot.getValue()) {
-			Toast.makeText(this, childName + " " + getString(R.string.is_out_of_the_fence), Toast.LENGTH_SHORT).show();
-			stopSelf();
-		}
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "GeoFencingAlertsChannel")
+				.setSmallIcon(R.drawable.sismonak_notification)
+				.setContentTitle("GeoFencing Alert")
+				.setContentText(childName + " " + getString(R.string.is_out_of_the_fence))
+				.setPriority(NotificationCompat.PRIORITY_HIGH)
+				.setDefaults(NotificationCompat.DEFAULT_ALL)
+				.setAutoCancel(true);
+
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		notificationManager.notify(1, builder.build());
+//		stopSelf();
+		closeFencingService();
 	}
-	
-	
+
+
 	private void closeFencingService() {
 		if (lastChildEmail != null) {
 			Query query = databaseReference.child("childs").orderByChild("email").equalTo(lastChildEmail);
@@ -141,16 +167,16 @@ public class GeoFencingForegroundService extends Service {
 						stopSelf();
 					}
 				}
-				
+
 				@Override
 				public void onCancelled(@NonNull DatabaseError databaseError) {
-				
+
 				}
 			});
-			
+
 		} else {
 			stopSelf();
 		}
 	}
-	
+
 }
