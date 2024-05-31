@@ -13,8 +13,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mzhtech.sismonakdev.R;
 import com.mzhtech.sismonakdev.dialogfragments.AccountDeleteDialogFragment;
 import com.mzhtech.sismonakdev.dialogfragments.ConfirmationDialogFragment;
@@ -32,6 +46,7 @@ import com.mzhtech.sismonakdev.utils.SharedPrefsUtils;
 public class SettingsActivity extends AppCompatActivity implements OnLanguageSelectionListener, OnConfirmationListener, OnPasswordChangeListener, OnDeleteAccountListener {
 	private Button btnLanguageSelection;
 	private Button btnLogout;
+	private Button btnChangeProfPic;
 	private Button btnChangePassword;
 	private Button btnDeleteAccount;
 	private Button btnAbout;
@@ -42,11 +57,30 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 	private ImageButton btnSettings;
 	private TextView txtTitle;
 	private FrameLayout toolbar;
+	private FirebaseAuth auth;
+	private FirebaseDatabase firebaseDatabase;
+	private DatabaseReference databaseReference;
+	private FirebaseStorage firebaseStorage;
+	private StorageReference storageReference;
+	private boolean googleAuth;
+	private String imageUri;
+	private boolean parent;
+	private String uid;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
+
+		auth = FirebaseAuth.getInstance();
+		firebaseDatabase = FirebaseDatabase.getInstance();
+		databaseReference = firebaseDatabase.getReference("users");
+		firebaseStorage = FirebaseStorage.getInstance();
+		storageReference = firebaseStorage.getReference("profileImages");
+
+		googleAuth = SharedPrefsUtils.getBooleanPreference(this, "googleAuth", false);
+		parent = SharedPrefsUtils.getBooleanPreference(this, "isParent", true);
+		uid = auth.getUid();
 		
 		toolbar = findViewById(R.id.toolbar);
 		btnBack = findViewById(R.id.btnBack);
@@ -77,7 +111,14 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 				logout();
 			}
 		});
-		
+
+		btnChangeProfPic = findViewById(R.id.btnChangeProfPic);
+		btnChangeProfPic.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				openFileChooser();
+			}
+		});
 		
 		btnChangePassword = findViewById(R.id.btnChangePassword);
 		btnChangePassword.setOnClickListener(new View.OnClickListener() {
@@ -213,6 +254,57 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		
+	}
+
+	private void openFileChooser() {
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);
+		startActivityForResult(intent, Constant.PICK_IMAGE_REQUEST);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == Constant.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+			imageUri = data.getData().toString();
+			uploadProfileImage(imageUri);
+		}
+	}
+
+	private void uploadProfileImage(String imageUri) {
+		if (googleAuth && imageUri == null) {
+//			imageUri = auth.getCurrentUser().getPhotoUrl().toString();
+			if (parent)
+				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri);
+			else
+				databaseReference.child("childs").child(uid).child("profileImage").setValue(imageUri);
+
+		} else if (!googleAuth) {
+			final StorageReference profileImageStorageReference = storageReference.child(uid + "_profileImage");
+			profileImageStorageReference.putFile(Uri.parse(imageUri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+				@Override
+				public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+					profileImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+						@Override
+						public void onSuccess(Uri uri) {
+							if (uri != null) {
+								if (parent)
+									databaseReference.child("parents").child(uid).child("profileImage").setValue(uri.toString());
+								else
+									databaseReference.child("childs").child(uid).child("profileImage").setValue(uri.toString());
+							}
+//							Toast.makeText(SignUpActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
+						}
+					});
+				}
+			}).addOnFailureListener(new OnFailureListener() {
+				@Override
+				public void onFailure(@NonNull Exception e) {
+					Toast.makeText(SettingsActivity.this, getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
+				}
+			});
+		}
 	}
 	
 	@Override

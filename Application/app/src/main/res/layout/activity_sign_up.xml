@@ -26,11 +26,10 @@
                 android:id="@+id/imgProfile"
                 android:layout_width="@dimen/circular_image_width_large"
                 android:layout_height="@dimen/circular_image_height_large"
-                android:src="@drawable/ic_profile_image"
+                android:src="@drawable/sismonak_add_image"
                 app:civ_border_color="@color/flatui_clouds"
                 app:civ_border_width="@dimen/circular_image_border_large"
                 app:civ_circle_background_color="@color/flatui_clouds" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"

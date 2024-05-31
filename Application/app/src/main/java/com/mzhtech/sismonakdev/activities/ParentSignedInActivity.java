@@ -38,6 +38,7 @@ import com.mzhtech.sismonakdev.models.Parent;
 import com.mzhtech.sismonakdev.models.ScreenLock;
 import com.mzhtech.sismonakdev.models.User;
 import com.mzhtech.sismonakdev.utils.Constant;
+import com.mzhtech.sismonakdev.utils.SharedPrefsUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -71,6 +72,8 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 	private String childEmail;
+
+	private String userId;
 
 	private static final int REQUEST_CODE_PERMISSIONS = 101;
 	private static final String[] REQUIRED_PERMISSIONS = new String[] {
@@ -117,8 +120,11 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	public void continueApp(){
 		auth = FirebaseAuth.getInstance();
 		user = auth.getCurrentUser();
+		userId = user.getUid();
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
+
+		SharedPrefsUtils.setBooleanPreference(this, "isParent", true);
 
 		imgParent = findViewById(R.id.imgParent);
 		txtParentName = findViewById(R.id.txtParentName);
@@ -195,7 +201,7 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	}
 	
 	public void getParentData(String parentEmail) {
-		Query query = databaseReference.child("parents").orderByChild("email").equalTo(parentEmail);
+		Query query = databaseReference.child("parents").orderByChild("email").equalTo(parentEmail).limitToFirst(1);
 		query.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

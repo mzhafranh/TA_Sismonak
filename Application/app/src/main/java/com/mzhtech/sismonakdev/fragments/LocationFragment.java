@@ -462,7 +462,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				String childId = "";
 				for (DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-					childId = childSnapshot.getKey(); // This is your dynamic ID like "CxZiHIcM7tW52aOYtPJuTWwBpAf1"
+					childId = childSnapshot.getKey();
 					Log.d("Firebase", "Child ID: " + childId);
 				}
 				DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
@@ -473,12 +473,16 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 				ref.addListenerForSingleValueEvent(new ValueEventListener() {
 					@Override
 					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-						if (dataSnapshot.child("geoFence").getValue(Boolean.class) == true){
+						if (!dataSnapshot.child("geoFence").exists()){
+							ref.child("geoFence").setValue(false);
+						} else {
+							if (dataSnapshot.child("geoFence").getValue(Boolean.class) == true){
 //							onGeoFenceSet("Child", dataSnapshot.child("fenceDiameter").getValue(Long.class));
-							Location centerLocation = new Location();
-							centerLocation.setLatitude(dataSnapshot.child("fenceCenterLatitude").getValue(Double.class));
-							centerLocation.setLongitude(dataSnapshot.child("fenceCenterLongitude").getValue(Double.class));
-							addCircleToMap(mapView, centerLocation, dataSnapshot.child("fenceDiameter").getValue(Double.class));
+								Location centerLocation = new Location();
+								centerLocation.setLatitude(dataSnapshot.child("fenceCenterLatitude").getValue(Double.class));
+								centerLocation.setLongitude(dataSnapshot.child("fenceCenterLongitude").getValue(Double.class));
+								addCircleToMap(mapView, centerLocation, dataSnapshot.child("fenceDiameter").getValue(Double.class));
+							}
 						}
 					}
 

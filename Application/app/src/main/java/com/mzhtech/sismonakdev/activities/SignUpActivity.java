@@ -1,6 +1,8 @@
 package com.mzhtech.sismonakdev.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,13 +54,14 @@ import com.mzhtech.sismonakdev.interfaces.OnGoogleChildSignUp;
 import com.mzhtech.sismonakdev.models.Child;
 import com.mzhtech.sismonakdev.models.Parent;
 import com.mzhtech.sismonakdev.utils.Constant;
+import com.mzhtech.sismonakdev.utils.SharedPrefsUtils;
 import com.mzhtech.sismonakdev.utils.Validators;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class SignUpActivity extends AppCompatActivity implements OnConfirmationListener, OnGoogleChildSignUp {
-	private static final String TAG = "SingUpActivityTAG";
+	private static final String TAG = "SignUpActivityTAG";
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 	private FirebaseStorage firebaseStorage;
@@ -106,7 +111,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 			
 			@Override
 			public void afterTextChanged(Editable editable) {
-				Query query = databaseReference.child("parents").orderByChild("email").equalTo(txtParentEmail.getText().toString().toLowerCase());
+				Query query = databaseReference.child("parentsList").orderByChild("email").equalTo(txtParentEmail.getText().toString().toLowerCase());
 				query.addListenerForSingleValueEvent(new ValueEventListener() {
 					@Override
 					public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -132,6 +137,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		imgProfile.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.i(TAG, "Sampai onClick imgProfile");
 				openFileChooser();
 			}
 		});
@@ -194,71 +200,84 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	private void signUpRoutine(String parentEmail) {
 		uid = auth.getCurrentUser().getUid();
 		Log.i(TAG, "signUpRoutine: UID: " + uid);
-		addUserToDB(parentEmail, parent);
-		uploadProfileImage(parent);
-		startAccountVerificationActivity();
+//		addUserToDB(parentEmail, parent);
+//		uploadProfileImage(parent);
+		startAccountVerificationActivity(parentEmail, uid);
 	}
 	
-	private void startAccountVerificationActivity() {
+	private void startAccountVerificationActivity(String parentEmail, String uid) {
 		Intent intent = new Intent(this, AccountVerificationActivity.class);
+//		intent.putExtra("parentEmail",parentEmail);
+//		intent.putExtra("isParent", parent);
+//		intent.putExtra("googleAuth", googleAuth);
+//		intent.putExtra("signUpEmail", txtSignUpEmail.getText().toString().toLowerCase());
+//		intent.putExtra("signUpName", txtSignUpName.getText().toString().replaceAll("\\s+$", ""));
+//		intent.putExtra("uid", uid);
+		intent.putExtra("imageUri",imageUri.toString());
+		SharedPrefsUtils.setStringPreference(this, "parentEmail", parentEmail);
+		SharedPrefsUtils.setBooleanPreference(this, "isParent", parent);
+		SharedPrefsUtils.setBooleanPreference(this, "googleAuth", googleAuth);
+		SharedPrefsUtils.setStringPreference(this, "signUpEmail", txtSignUpEmail.getText().toString().toLowerCase());
+		SharedPrefsUtils.setStringPreference(this, "signUpName", txtSignUpName.getText().toString().replaceAll("\\s+$", ""));
+		SharedPrefsUtils.setStringPreference(this, "uid", uid);
 		startActivity(intent);
 	}
 	
-	private void uploadProfileImage(final boolean parent) {
-		if (googleAuth && imageUri == null) {
-			imageUri = auth.getCurrentUser().getPhotoUrl();
-			if (parent)
-				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri.toString());
-			else
-				databaseReference.child("childs").child(uid).child("profileImage").setValue(imageUri.toString());
-			
-		} else if (!googleAuth) {
-			final StorageReference profileImageStorageReference = storageReference.child(uid + "_profileImage");
-			profileImageStorageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-				@Override
-				public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-					profileImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-						@Override
-						public void onSuccess(Uri uri) {
-							if (uri != null) {
-								if (parent)
-									databaseReference.child("parents").child(uid).child("profileImage").setValue(uri.toString());
-								else
-									databaseReference.child("childs").child(uid).child("profileImage").setValue(uri.toString());
-							}
-							Toast.makeText(SignUpActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
-						}
-					});
-				}
-			}).addOnFailureListener(new OnFailureListener() {
-				@Override
-				public void onFailure(@NonNull Exception e) {
-					Toast.makeText(SignUpActivity.this, getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
-				}
-			});
-		}
-	}
+//	private void uploadProfileImage(final boolean parent) {
+//		if (googleAuth && imageUri == null) {
+//			imageUri = auth.getCurrentUser().getPhotoUrl();
+//			if (parent)
+//				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri.toString());
+//			else
+//				databaseReference.child("childs").child(uid).child("profileImage").setValue(imageUri.toString());
+//
+//		} else if (!googleAuth) {
+//			final StorageReference profileImageStorageReference = storageReference.child(uid + "_profileImage");
+//			profileImageStorageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//				@Override
+//				public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//					profileImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//						@Override
+//						public void onSuccess(Uri uri) {
+//							if (uri != null) {
+//								if (parent)
+//									databaseReference.child("parents").child(uid).child("profileImage").setValue(uri.toString());
+//								else
+//									databaseReference.child("childs").child(uid).child("profileImage").setValue(uri.toString());
+//							}
+////							Toast.makeText(SignUpActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
+//						}
+//					});
+//				}
+//			}).addOnFailureListener(new OnFailureListener() {
+//				@Override
+//				public void onFailure(@NonNull Exception e) {
+//					Toast.makeText(SignUpActivity.this, getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
+//				}
+//			});
+//		}
+//	}
 	
-	private void addUserToDB(String parentEmail, boolean parent) {
-		String email;
-		String name;
-		if (googleAuth) {
-			email = auth.getCurrentUser().getEmail();
-			name = auth.getCurrentUser().getDisplayName();
-		} else {
-			email = txtSignUpEmail.getText().toString().toLowerCase();
-			name = txtSignUpName.getText().toString().replaceAll("\\s+$", "");
-		}
-		Log.i(TAG, "signUpRoutine: UID: " + uid);
-		
-		if (parent) {
-			Parent p = new Parent(name, email);
-			databaseReference.child("parents").child(uid).setValue(p);
-		} else {
-			Child c = new Child(name, email, parentEmail);
-			databaseReference.child("childs").child(uid).setValue(c);
-		}
-	}
+//	private void addUserToDB(String parentEmail, boolean parent) {
+//		String email;
+//		String name;
+//		if (googleAuth) {
+//			email = auth.getCurrentUser().getEmail();
+//			name = auth.getCurrentUser().getDisplayName();
+//		} else {
+//			email = txtSignUpEmail.getText().toString().toLowerCase();
+//			name = txtSignUpName.getText().toString().replaceAll("\\s+$", "");
+//		}
+//		Log.i(TAG, "signUpRoutine: UID: " + uid);
+//
+//		if (parent) {
+//			Parent p = new Parent(name, email);
+//			databaseReference.child("parents").child(uid).setValue(p);
+//		} else {
+//			Child c = new Child(name, email, parentEmail);
+//			databaseReference.child("childs").child(uid).setValue(c);
+//		}
+//	}
 	
 	private void startLoadingFragment(LoadingDialogFragment loadingDialogFragment) {
 		loadingDialogFragment.setCancelable(false);
@@ -300,6 +319,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		
 		
 		if (!Validators.isValidImageURI(imageUri)) {
+			Log.i(TAG, "Sampai isValidImageURI");
 			ConfirmationDialogFragment confirmationDialogFragment = new ConfirmationDialogFragment();
 			Bundle bundle = new Bundle();
 			bundle.putString(Constant.CONFIRMATION_MESSAGE, getString(R.string.would_you_love_to_add_a_profile_image));
@@ -327,10 +347,19 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	}
 	
 	private void openFileChooser() {
+		Log.i(TAG, "Sampai openFileChooser");
+		requestStoragePermission();
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		startActivityForResult(intent, Constant.PICK_IMAGE_REQUEST);
+		Log.i(TAG, "setelah start activity for result");
+	}
+
+	private void requestStoragePermission() {
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 102);
+		}
 	}
 	
 	private void signInWithGoogle() {
@@ -346,7 +375,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+		Log.i(TAG, "Sampai onActivityResult");
 		if (requestCode == Constant.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 			imageUri = data.getData();
 			imgProfile.setImageURI(imageUri);
@@ -393,7 +422,9 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	
 	@Override
 	public void onConfirm() {
+		Log.i(TAG, "Sampai onConfirm");
 		imgProfile.requestFocus();
+		openFileChooser();
 		Toast.makeText(this, getString(R.string.please_add_a_profile_image), Toast.LENGTH_SHORT).show();
 	}
 	

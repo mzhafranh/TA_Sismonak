@@ -154,7 +154,7 @@
     <string name="please_enable_your_gps">Harap aktifkan GPS Anda</string>
     <string name="please_allow_the_following_permissions">Harap terima izin berikut agar SisMoNak dapat berfungsi dengan baik</string>
     <string name="about_message">Sismonak adalah aplikasi kontrol orang tua android gratis dan sumber terbuka yang memungkinkan orang tua mengendalikan aktivitas anak-anak mereka. Sismonak adalah pengembangan dari proyek yang sudah ada yang dikenal sebagai KidSafe oleh Mahmoud Mansour dan Khalid Samir. Sismonak adalah proyek tugas akhir dari anggota yang disebutkan di bawah ini</string>
-    <string name="many_thanks_goes_to_freepik_and_smashiocns_for_the_graphics">Terima kasih banyak kepada freepik.com dan smashicons.com untuk grafisnya</string>
+    <string name="many_thanks_goes_to_freepik_and_smashiocns_for_the_graphics">Terima kasih banyak kepada freepik.com, flaticon.com dan smashicons.com untuk grafisnya</string>
     <string name="developers">Pengembang</string>
     <string name="mahmoud_mansour">Mahmoud Mansour</string>
     <string name="khalid_samir">Khalid Samir</string>
@@ -183,4 +183,5 @@
     <string name="no_app_data">Tidak ada data</string>
     <string name="usage">Penggunaan</string>
     <string name="graph">Grafik</string>
+    <string name="change_profile_picture">Ganti Gambar Profil</string>
 </resources>

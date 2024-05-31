@@ -44,6 +44,7 @@ public class ChildSignedInActivity extends AppCompatActivity implements OnPermis
 		setContentView(R.layout.activity_child_signed_in);
 		
 		boolean childFirstLaunch = SharedPrefsUtils.getBooleanPreference(this, Constant.CHILD_FIRST_LAUNCH, true);
+		SharedPrefsUtils.setBooleanPreference(this, "isParent", false);
 		if (childFirstLaunch) startActivity(new Intent(this, PermissionsActivity.class));
 		else {
 			

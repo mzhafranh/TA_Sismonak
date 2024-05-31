@@ -92,6 +92,7 @@ public class AccountUtils {
 					String imgUrl = parent.getProfileImage();
 					removeImage(imgUrl, providerId, password, context);
 					databaseReference.child("parents").child(user.getUid()).removeValue();
+					databaseReference.child("parentsList").child(user.getUid()).removeValue();
 				} else {
 					Query childQuery = databaseReference.child("childs").orderByChild("email").equalTo(user.getEmail());
 					childQuery.addListenerForSingleValueEvent(new ValueEventListener() {

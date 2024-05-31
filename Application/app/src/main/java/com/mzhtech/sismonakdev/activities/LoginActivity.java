@@ -1,6 +1,11 @@
 package com.mzhtech.sismonakdev.activities;
 
+import android.Manifest;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,6 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mzhtech.sismonakdev.R;
+import com.mzhtech.sismonakdev.broadcasts.AdminReceiver;
 import com.mzhtech.sismonakdev.dialogfragments.InformationDialogFragment;
 import com.mzhtech.sismonakdev.dialogfragments.LoadingDialogFragment;
 import com.mzhtech.sismonakdev.dialogfragments.RecoverPasswordDialogFragment;
@@ -62,36 +70,60 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 	private DatabaseReference databaseReference;
 	private String emailPrefs;
 	private String passwordPrefs;
-	private boolean autoLoginPrefs;
-	
+	private boolean autoLoginPrefs = false;
+
+	private static final int REQUEST_CODE_PERMISSIONS = 101;
+	private static final String[] REQUIRED_PERMISSIONS = new String[] {
+			Manifest.permission.WRITE_EXTERNAL_STORAGE,
+			Manifest.permission.READ_EXTERNAL_STORAGE,
+			Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.ACCESS_COARSE_LOCATION
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i(TAG, "onCreate LoginActivity");
 		setContentView(R.layout.activity_login);
 		
 		fragmentManager = getSupportFragmentManager();
 		LocaleUtils.setAppLanguage(this);
-		
-		
+
+		if (!allPermissionsGranted()) {
+			ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
+		} else {
+			continueApp();
+		}
+
+	}
+
+	private boolean allPermissionsGranted() {
+		for (String permission : REQUIRED_PERMISSIONS) {
+			if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void continueApp(){
 		//FirebaseApp.initializeApp(this);
 		auth = FirebaseAuth.getInstance();
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
-		
-		
+
+
 		txtLogInEmail = findViewById(R.id.txtLogInEmail);
 		txtLogInPassword = findViewById(R.id.txtLogInPassword);
 		txtForgotPassword = findViewById(R.id.txtForgotPassword);
 		progressBar = findViewById(R.id.progressBar);
-		
+
 		checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 		//progressBar.setVisibility(View.GONE);
-		
+
 		btnLogin = findViewById(R.id.btnLogin);
 		txtSignUp = findViewById(R.id.txtSignUp);
 		btnGoogleSignUp = findViewById(R.id.btnSignUpGoogle);
-		
 		btnLogin.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -101,38 +133,38 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 				login(email, password);
 			}
 		});
-		
+
 		txtSignUp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startModeSelectionActivity();
 			}
 		});
-		
+
 		txtForgotPassword.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				sendPasswordRecoveryEmail();
 			}
 		});
-		
+
 		btnGoogleSignUp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				signInWithGoogle();
 			}
 		});
-		
+
 		autoLoginPrefs = SharedPrefsUtils.getBooleanPreference(this, Constant.AUTO_LOGIN, false);
 		checkBoxRememberMe.setChecked(autoLoginPrefs);
-		
+
 		emailPrefs = SharedPrefsUtils.getStringPreference(this, Constant.EMAIL, "");
 		passwordPrefs = SharedPrefsUtils.getStringPreference(this, Constant.PASSWORD, "");
 		if (autoLoginPrefs) {
 			txtLogInEmail.setText(emailPrefs);
 			txtLogInPassword.setText(passwordPrefs);
 		}
-		
+
 		if (!Validators.isGooglePlayServicesAvailable(this)) {
 			startInformationDialogFragment(getString(R.string.please_download_google_play_services));
 			//Toast.makeText(this, getString(R.string.please_download_google_play_services), Toast.LENGTH_SHORT).show();
@@ -146,6 +178,18 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 			txtForgotPassword.setClickable(false);
 			checkBoxRememberMe.setEnabled(false);
 			checkBoxRememberMe.setClickable(false);
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if (requestCode == REQUEST_CODE_PERMISSIONS) {
+			if (allPermissionsGranted()) {
+				continueApp();
+			} else {
+				Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
+				finish();
+			}
 		}
 	}
 	
@@ -169,7 +213,6 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 		SharedPrefsUtils.setBooleanPreference(this, Constant.AUTO_LOGIN, checkBoxRememberMe.isChecked());
 		SharedPrefsUtils.setStringPreference(this, Constant.EMAIL, txtLogInEmail.getText().toString().toLowerCase());
 		SharedPrefsUtils.setStringPreference(this, Constant.PASSWORD, txtLogInPassword.getText().toString());
-		
 	}
 	
 	private void login(String email, String password) {
@@ -258,26 +301,39 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 	private void checkMode(String email) {
 		final LoadingDialogFragment loadingDialogFragment = new LoadingDialogFragment();
 		startLoadingFragment(loadingDialogFragment);
-		Query query = databaseReference.child("parents").orderByChild("email").equalTo(email);
-		query.addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				loadingDialogFragment.dismiss();
-				if (dataSnapshot.exists()) {
-					startParentSignedInActivity();
-				} else {
-					startChildSignedInActivity();
+		if (auth.getCurrentUser().isEmailVerified()){
+			Query query = databaseReference.child("parentsList").orderByChild("email").equalTo(email);
+			query.addListenerForSingleValueEvent(new ValueEventListener() {
+				@Override
+				public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+					loadingDialogFragment.dismiss();
+					if (dataSnapshot.exists()) {
+						startParentSignedInActivity();
+					} else {
+						if (isDeviceAdmin()){
+							startChildSignedInActivity();
+						}
+						else {
+							startPermissionActivity();
+						}
+					}
+
 				}
-				
-			}
-			
-			@Override
-			public void onCancelled(@NonNull DatabaseError databaseError) {
-				Log.i(TAG, "onCancelled: canceled");
-			}
-		});
+
+				@Override
+				public void onCancelled(@NonNull DatabaseError databaseError) {
+					Log.i(TAG, "onCancelled: canceled");
+				}
+			});
+		}
 	}
-	
+
+	private boolean isDeviceAdmin() {
+		DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+		ComponentName componentName = new ComponentName(this, AdminReceiver.class);
+		return devicePolicyManager.isAdminActive(componentName);
+	}
+
 	private void startParentSignedInActivity() {
 		Intent intent = new Intent(this, ParentSignedInActivity.class);
 		startActivity(intent);
@@ -285,6 +341,11 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 	
 	private void startChildSignedInActivity() {
 		Intent intent = new Intent(this, ChildSignedInActivity.class);
+		startActivity(intent);
+	}
+
+	private void startPermissionActivity() {
+		Intent intent = new Intent(this, PermissionsActivity.class);
 		startActivity(intent);
 	}
 	

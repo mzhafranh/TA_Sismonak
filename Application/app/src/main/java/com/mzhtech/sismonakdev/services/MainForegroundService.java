@@ -557,8 +557,7 @@ public class MainForegroundService extends Service {
 		}
 		return appPackageName;
 	}
-	
-	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
 	private String getLollipopForegroundAppPackageName() {
 		//Log.i(TAG, "getLollipopForegroundAppPackageName: executed");
 		try {

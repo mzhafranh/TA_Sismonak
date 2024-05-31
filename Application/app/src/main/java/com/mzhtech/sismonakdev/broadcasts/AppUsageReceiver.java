@@ -78,6 +78,7 @@ public class AppUsageReceiver extends BroadcastReceiver {
                             totalDuration = appUsageDurationMap.getOrDefault(usageStats.getPackageName(), 0L);
                             totalDuration += usageStats.getTotalTimeInForeground();
                             appUsageDurationMap.put(usageStats.getPackageName(), totalDuration);
+//                            Log.i(TAG, usageStats.getPackageName() + " " +  totalDuration);
                         }
                     }
 
