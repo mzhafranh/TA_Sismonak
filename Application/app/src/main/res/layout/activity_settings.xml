@@ -53,7 +53,7 @@
                 <Button
                     android:id="@+id/btnChangeProfPic"
                     style="@style/ButtonSettings"
-                    android:text="@string/change_profile_picture" />
+                    android:text="@string/change_profile_picture"/>
 
                 <include layout="@layout/horizontal_line" />
 

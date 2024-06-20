@@ -68,6 +68,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	private DatabaseReference databaseReference;
 	private MapView mapView;
 	private FloatingActionButton fabGeoFence;
+	private FloatingActionButton fabStopGeoFence;
 	private IMapController mapController;
 	private String childEmail;
 	private String childName;
@@ -101,13 +102,23 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		mapView = view.findViewById(R.id.mapView);
 		
 		fabGeoFence = view.findViewById(R.id.fabGeoFence);
+		fabStopGeoFence = view.findViewById(R.id.fabStopGeoFence);
 		fabGeoFence.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startGeoFencingDialogFragment();
 			}
 		});
-		
+
+		fabStopGeoFence.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				closeFencingService();
+				fabStopGeoFence.hide();
+				Toast.makeText(context, getString(R.string.geo_fence_has_been_stopped), Toast.LENGTH_SHORT).show();
+			}
+		});
+
 		FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
 		
@@ -386,7 +397,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 							startFencingService();
 //							addCircleToMap(mapView, userLocation, geoFenceDiameter);
 							checkGeoFence();
-							Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
+							Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " | " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 						}
 					} else {
 						double childLatitude = childLocation.getLatitude();
@@ -396,7 +407,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 						startFencingService();
 //						addCircleToMap(mapView, childLocation, geoFenceDiameter);
 						checkGeoFence();
-						Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
+						Toast.makeText(context, getString(R.string.center) + " " + geoFenceCenter + " | " + getString(R.string.diameter) + " " + geoFenceDiameter, Toast.LENGTH_SHORT).show();
 					}
 					
 				}
@@ -482,6 +493,7 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 								centerLocation.setLatitude(dataSnapshot.child("fenceCenterLatitude").getValue(Double.class));
 								centerLocation.setLongitude(dataSnapshot.child("fenceCenterLongitude").getValue(Double.class));
 								addCircleToMap(mapView, centerLocation, dataSnapshot.child("fenceDiameter").getValue(Double.class));
+								fabStopGeoFence.show();
 							}
 						}
 					}
@@ -499,5 +511,36 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 
 			}
 		});
+	}
+
+	private void closeFencingService() {
+		if (childEmail != null) {
+			Query query = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
+			query.addListenerForSingleValueEvent(new ValueEventListener() {
+				@Override
+				public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+					if (dataSnapshot.exists()) {
+						final DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
+						String childUID = nodeShot.getKey();
+						Log.i(TAG, "onDataChange: Done");
+						databaseReference.child("childs").child(childUID).child("location").child("outOfFence").setValue(false);
+						databaseReference.child("childs").child(childUID).child("location").child("geoFence").setValue(false);
+						mapView.getOverlays().remove(circle);
+						Intent intent = new Intent(getActivity(), GeoFencingForegroundService.class);
+						getActivity().stopService(intent);
+					}
+				}
+
+				@Override
+				public void onCancelled(@NonNull DatabaseError databaseError) {
+
+				}
+			});
+
+		} else {
+			mapView.getOverlays().remove(circle);
+			Intent intent = new Intent(getActivity(), GeoFencingForegroundService.class);
+			getActivity().stopService(intent);
+		}
 	}
 }

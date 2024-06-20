@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mzhtech.sismonakdev.R;
 import com.mzhtech.sismonakdev.activities.ParentSignedInActivity;
 import com.mzhtech.sismonakdev.utils.Constant;
+import com.mzhtech.sismonakdev.utils.SharedPrefsUtils;
 
 import static com.mzhtech.sismonakdev.NotificationChannelCreator.CHANNEL_ID;
 
@@ -134,13 +135,22 @@ public class GeoFencingForegroundService extends Service {
 	private void showNotification(DataSnapshot dataSnapshot, String childName) {
 		Log.i(TAG, "showNotification: key: " + dataSnapshot.getKey());
 		Log.i(TAG, "showNotification: value: " + dataSnapshot.getValue());
+
 		//Log.i(TAG, "showNotification: children: " + dataSnapshot.getChildren());
 		//Log.i(TAG, "showNotification: childrenCount" + dataSnapshot.getChildrenCount());
+		String warningMessage = " is out of the fence";
+		String languageCode = SharedPrefsUtils.getStringPreference(this, Constant.APP_LANGUAGE, "en"); // Example: retrieve language code from shared preferences
+
+		Log.i(TAG, languageCode);
+
+		if (languageCode.equals("in")){
+			warningMessage = " pergi keluar pagar";
+		}
 
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "GeoFencingAlertsChannel")
 				.setSmallIcon(R.drawable.sismonak_notification)
 				.setContentTitle("GeoFencing Alert")
-				.setContentText(childName + " " + getString(R.string.is_out_of_the_fence))
+				.setContentText(childName + warningMessage)
 				.setPriority(NotificationCompat.PRIORITY_HIGH)
 				.setDefaults(NotificationCompat.DEFAULT_ALL)
 				.setAutoCancel(true);

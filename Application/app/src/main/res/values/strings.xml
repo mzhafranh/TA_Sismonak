@@ -197,6 +197,8 @@
     <string name="usage">Usage</string>
     <string name="graph">Graph</string>
     <string name="change_profile_picture">Change Profile Picture</string>
+    <string name="permission_not_granted">Permissions not granted by the user.</string>
+    <string name="geo_fence_has_been_stopped">Geo fence has been stopped</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

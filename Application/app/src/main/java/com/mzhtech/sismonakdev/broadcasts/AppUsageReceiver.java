@@ -51,7 +51,7 @@ public class AppUsageReceiver extends BroadcastReceiver {
 //            Calendar minuteCheck = Calendar.getInstance();
 //            int minutes = minuteCheck.get(Calendar.MINUTE);
 
-            if (minutes == 59) {
+//            if (minutes == 59) {
 
                 String uid = user.getUid();
 
@@ -131,14 +131,14 @@ public class AppUsageReceiver extends BroadcastReceiver {
                         }
                     }
                 }
-            }
+//            }
         }
     }
 
     private boolean checkSystemApp(String packageName, PackageManager packageManager) {
         try {
             ApplicationInfo appInfo = packageManager.getApplicationInfo(packageName, 0);
-            return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1 || appInfo.packageName.contains("com.google"));
+            return ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1 || appInfo.packageName.contains("com.google") || appInfo.packageName.contains("brave.browser"));
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Package name not found ", e);
             return false; // Return the package name if an app name is not found

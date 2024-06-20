@@ -19,7 +19,7 @@
     <string name="child_app_name">Nama aplikasi</string>
     <string name="this_app_is_blocked_by_your_parents">Diblokir oleh orang tua</string>
     <string name="select_geofence_s_center">Pusat</string>
-    <string name="diameter_in_meters">Diameter in meters</string>
+    <string name="diameter_in_meters">Diameter dalam meters</string>
     <string name="device_admin_description">Izinkan SisMoNak untuk mengunci perangkat</string>
     <string name="device_admin_explanation">SisMoNak harus menjadi admin perangkat untuk mengunci ponsel</string>
     <string name="device_admin_enabled">Admin Perangkat Diaktifkan</string>
@@ -115,7 +115,7 @@
     <string name="password_reset_email_sent">Email pengaturan ulang kata sandi terkirim, mungkin ada dalam draf Anda</string>
     <string name="name_validation">Masukkan nama kurang dari 15 karakter</string>
     <string name="please_add_a_profile_image">Silakan tambahkan gambar profil</string>
-    <string name="if_he_exceeded_it_you_will_be_alerted">, jika melebihinya, Anda akan diberi tahu</string>
+    <string name="if_he_exceeded_it_you_will_be_alerted">, jika Ia melebihinya, Anda akan mendapatkan peringatan</string>
     <string name="phone">telepon</string>
     <string name="lock">Kunci</string>
     <string name="now_or_after_a_period">sekarang, atau setelah jangka waktu tertentu?</string>
@@ -138,7 +138,7 @@
     <string name="parent">Orang tua</string>
     <string name="child">Anak</string>
     <string name="please_enter_this_child_parent_email">Silakan masukkan email orang tua anak ini</string>
-    <string name="setup_geo_fence_on">Siapkan Geo-Fence di</string>
+    <string name="setup_geo_fence_on">Pasang Geo-Fence terhadap</string>
     <string name="please_download_google_play_services">Silakan unduh layanan google play</string>
     <string name="stop">Berhenti</string>
     <string name="is_out_of_the_fence">pergi keluar pagar</string>
@@ -184,4 +184,6 @@
     <string name="usage">Penggunaan</string>
     <string name="graph">Grafik</string>
     <string name="change_profile_picture">Ganti Gambar Profil</string>
+    <string name="permission_not_granted">Izin tidak diberikan oleh pengguna.</string>
+    <string name="geo_fence_has_been_stopped">Geo fence telah dihentikan</string>
 </resources>

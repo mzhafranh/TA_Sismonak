@@ -111,7 +111,7 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 			if (allPermissionsGranted()) {
 				continueApp();
 			} else {
-				Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.permission_not_granted), Toast.LENGTH_SHORT).show();
 				finish();
 			}
 		}
