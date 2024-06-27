@@ -25,7 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mzhtech.sismonakdev.R;
-import com.mzhtech.sismonakdev.adapters.StatAdapter;
 import com.mzhtech.sismonakdev.models.App;
 import com.mzhtech.sismonakdev.utils.CustomValueFormatter;
 
@@ -41,7 +40,6 @@ public class StatFragment extends Fragment {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private ArrayList<App> apps;
-    private StatAdapter statAdapter;
     private RecyclerView recyclerViewStat;
     private Context context;
     private String childEmail;
