@@ -50,6 +50,7 @@ public class AccountVerificationActivity extends AppCompatActivity {
 	private String uid;
 	private String parentEmail;
 	private String imageUri;
+	private String userEmail;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class AccountVerificationActivity extends AppCompatActivity {
 		uid = SharedPrefsUtils.getStringPreference(this, "uid", "testAccount");
 //		parentEmail = getIntent().getStringExtra("parentEmail");
 		parentEmail= SharedPrefsUtils.getStringPreference(this, "parentEmail", "");
+		userEmail = SharedPrefsUtils.getStringPreference(this, "userEmail", "");
 		if (getIntent().getStringExtra("imageUri") == null){
 			imageUri = "android.resource://com.mzhtech.sismonakdev/drawable/ic_default_avatar";
 		} else {
@@ -186,7 +188,7 @@ public class AccountVerificationActivity extends AppCompatActivity {
 	}
 
 	private void uploadProfileImage() {
-		if (googleAuth && imageUri == null) {
+		if (googleAuth) {
 			imageUri = auth.getCurrentUser().getPhotoUrl().toString();
 			if (parent)
 				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri);

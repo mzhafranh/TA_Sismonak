@@ -77,6 +77,8 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	private CircleImageView imgProfile;
 	private FragmentManager fragmentManager;
 	private String uid;
+	private String userEmail;
+	private String parentEmail;
 	private boolean googleAuth = false;
 	private boolean parent = true;
 	private boolean validParent = false;
@@ -197,15 +199,24 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		}
 	}
 	
-	private void signUpRoutine(String parentEmail) {
+	private void signUpRoutine(String userEmail) {
 		uid = auth.getCurrentUser().getUid();
 		Log.i(TAG, "signUpRoutine: UID: " + uid);
 //		addUserToDB(parentEmail, parent);
 //		uploadProfileImage(parent);
-		startAccountVerificationActivity(parentEmail, uid);
+		startAccountVerificationActivity(userEmail, uid, parentEmail);
+	}
+
+	private void signUpRoutineChild(String parentEmail) {
+		uid = auth.getCurrentUser().getUid();
+		userEmail = auth.getCurrentUser().getEmail();
+		Log.i(TAG, "signUpRoutineChild: UID: " + uid);
+//		addUserToDB(parentEmail, parent);
+//		uploadProfileImage(parent);
+		startAccountVerificationActivity(userEmail, uid, parentEmail);
 	}
 	
-	private void startAccountVerificationActivity(String parentEmail, String uid) {
+	private void startAccountVerificationActivity(String userEmail, String uid, String parentEmail) {
 		Intent intent = new Intent(this, AccountVerificationActivity.class);
 //		intent.putExtra("parentEmail",parentEmail);
 //		intent.putExtra("isParent", parent);
@@ -213,8 +224,13 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 //		intent.putExtra("signUpEmail", txtSignUpEmail.getText().toString().toLowerCase());
 //		intent.putExtra("signUpName", txtSignUpName.getText().toString().replaceAll("\\s+$", ""));
 //		intent.putExtra("uid", uid);
-		intent.putExtra("imageUri",imageUri.toString());
+		if (!googleAuth){
+			intent.putExtra("imageUri",imageUri.toString());
+		} else {
+			intent.putExtra("imageUri",auth.getCurrentUser().getPhotoUrl().toString());
+		}
 		SharedPrefsUtils.setStringPreference(this, "parentEmail", parentEmail);
+		SharedPrefsUtils.setStringPreference(this, "userEmail", userEmail);
 		SharedPrefsUtils.setBooleanPreference(this, "isParent", parent);
 		SharedPrefsUtils.setBooleanPreference(this, "googleAuth", googleAuth);
 		SharedPrefsUtils.setStringPreference(this, "signUpEmail", txtSignUpEmail.getText().toString().toLowerCase());
@@ -383,6 +399,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		
 		if (requestCode == Constant.RC_SIGN_IN) {
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+			Log.d(TAG, "Sampai rc_sign_in");
 			try {
 				// Google Sign In was successful, authenticate with Firebase
 				GoogleSignInAccount account = task.getResult(ApiException.class);
@@ -405,11 +422,18 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 					Log.i(TAG, "onComplete: Authentication Succeeded");
 					//Toast.makeText(SignUpActivity.this, getString(R.string.authentication_succeeded), Toast.LENGTH_SHORT).show();
 					FirebaseUser user = auth.getCurrentUser();
+					String userEmail = user.getEmail();
+					uid = user.getUid();
 					googleAuth = true;
-					getParentEmail();
-					
+					if (!parent) {
+						getParentEmail();
+					}
+					startAccountVerificationActivity(userEmail, uid, parentEmail);
+
+				} else {
+					Log.w(TAG, "onComplete: Authentication Failed", task.getException());
+					Toast.makeText(SignUpActivity.this, "Authentication Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 				}
-				
 			}
 		});
 	}
@@ -437,7 +461,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	
 	@Override
 	public void onModeSelected(String parentEmail) {
-		signUpRoutine(parentEmail);
+		signUpRoutineChild(parentEmail);
 	}
 	
 }

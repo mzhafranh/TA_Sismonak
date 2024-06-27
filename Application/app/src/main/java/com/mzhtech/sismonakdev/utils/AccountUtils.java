@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,9 +30,14 @@ import com.mzhtech.sismonakdev.activities.LoginActivity;
 import com.mzhtech.sismonakdev.models.User;
 import com.mzhtech.sismonakdev.services.GeoFencingForegroundService;
 import com.mzhtech.sismonakdev.services.MainForegroundService;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class AccountUtils {
 	private static final String TAG = "AccountUtilsTAG";
+
+
 	
 	public static void changePassword(final Context context, String newPassword) {
 		FirebaseAuth.getInstance().getCurrentUser().updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {

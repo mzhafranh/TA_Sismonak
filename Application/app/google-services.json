@@ -1,7 +1,7 @@
 {
   "project_info": {
     "project_number": "573198939068",
-	"firebase_url": "https://sismonak-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "firebase_url": "https://sismonak-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "sismonak-dev",
     "storage_bucket": "sismonak-dev.appspot.com"
   },
@@ -13,7 +13,20 @@
           "package_name": "com.mzhtech.sismonakdev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "573198939068-bag2psuv74aiu6bdikmg2cg5a8amdbod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mzhtech.sismonakdev",
+            "certificate_hash": "4c410dd495c32337e4a7af2d5d15eff26eb7f691"
+          }
+        },
+        {
+          "client_id": "573198939068-dh490j2j6fguukjmeffqdu0l59sv6hvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAS8tTTt4SDhD-bxvWg7g6bjIzHihMO2Sw"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "573198939068-dh490j2j6fguukjmeffqdu0l59sv6hvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
