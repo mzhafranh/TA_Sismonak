@@ -115,7 +115,7 @@ public class MainForegroundService extends Service {
 		uid = user.getUid();
 		
 		Intent notificationIntent = new Intent(this, ChildSignedInActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 		
 		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
 				//.setContentTitle(notificationContent)

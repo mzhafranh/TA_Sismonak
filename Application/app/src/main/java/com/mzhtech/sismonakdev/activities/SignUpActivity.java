@@ -175,7 +175,11 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 				public void onComplete(@NonNull Task<AuthResult> task) {
 					stopLoadingFragment(loadingDialogFragment);
 					if (task.isSuccessful()) {
-						signUpRoutine(txtParentEmail.getText().toString().toLowerCase());
+						if(parent){
+							signUpRoutine(email);
+						} else {
+							signUpRoutineChild(txtParentEmail.getText().toString().toLowerCase());
+						}
 					} else {
 						String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
 						switch (errorCode) {
