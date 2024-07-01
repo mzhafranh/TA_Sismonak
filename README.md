@@ -4,12 +4,11 @@
 **Sismonak** adalah aplikasi kontrol orang tua android gratis dan sumber terbuka yang memungkinkan orang tua mengendalikan aktivitas anak-anak mereka. Sismonak adalah pengembangan dari proyek yang sudah ada yang dikenal sebagai [KidSafe](https://github.com/xMansour/KidSafe) oleh Mahmoud Mansour dan Khalid Samir.
 
 ## Panduan setup
-Video 
+### Video 
 https://youtu.be/tXr5AVMVrxo
 
-Teks
-
-Langkah-1angkah:
+### Teks
+Langkah-langkah:
 
 Bagian 1 - Mengunduh project Sismonak
 1. Klik tombol hijau pada halaman ini lalu klik download as zip
