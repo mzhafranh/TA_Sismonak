@@ -44,9 +44,9 @@ public class AccountUtils {
 			@Override
 			public void onComplete(@NonNull Task<Void> task) {
 				Toast.makeText(context, R.string.password_updated, Toast.LENGTH_SHORT).show();
+				SharedPrefsUtils.setBooleanPreference(context, Constant.AUTO_LOGIN, false);
 				context.startActivity(new Intent(context, LoginActivity.class));
 				closeServices(context);
-				
 			}
 		});
 	}

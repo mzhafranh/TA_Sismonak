@@ -130,6 +130,8 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 				autoLogin();
 				String email = txtLogInEmail.getText().toString().toLowerCase();
 				String password = txtLogInPassword.getText().toString();
+				SharedPrefsUtils.setStringPreference(LoginActivity.this, Constant.EMAIL, txtLogInEmail.getText().toString().toLowerCase());
+				SharedPrefsUtils.setStringPreference(LoginActivity.this, Constant.PASSWORD, txtLogInPassword.getText().toString());
 				login(email, password);
 			}
 		});
