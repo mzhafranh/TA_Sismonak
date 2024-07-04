@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 			if (allPermissionsGranted()) {
 				continueApp();
 			} else {
-				Toast.makeText(this, "Permissions not granted by the user.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.please_enable_the_permissions_in_the_app_settings), Toast.LENGTH_SHORT).show();
 				finish();
 			}
 		}
