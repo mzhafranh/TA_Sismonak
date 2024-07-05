@@ -187,4 +187,6 @@
     <string name="permission_not_granted">Izin tidak diberikan oleh pengguna.</string>
     <string name="geo_fence_has_been_stopped">Geo fence telah dihentikan</string>
     <string name="please_enable_the_permissions_in_the_app_settings">Tolong berikan izin media dan lokasi untuk Sismonak di pengaturan aplikasi.</string>
+    <string name="blocked">diblokir</string>
+    <string name="enabled">diaktifkan</string>
 </resources>

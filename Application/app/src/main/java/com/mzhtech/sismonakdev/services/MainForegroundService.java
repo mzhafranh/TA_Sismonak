@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.admin.DevicePolicyManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ContentResolver;
@@ -19,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
@@ -85,6 +87,11 @@ public class MainForegroundService extends Service {
 	private LocationListener locationListener;
 	private LocationManager locationManager;
 
+	private boolean isTimerRunning = false;
+	private long screenTime = 0;
+
+	private DevicePolicyManager devicePolicyManager;
+
 
 	@Override
 	public void onCreate() {
@@ -124,7 +131,10 @@ public class MainForegroundService extends Service {
 		startForeground(NOTIFICATION_ID, notification);
 		
 		getUserLocation();
-		
+
+		devicePolicyManager = (DevicePolicyManager) this.getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+
 		ArrayList<Contact> contacts = getContacts();
 		uploadContacts(contacts);
 
@@ -210,7 +220,28 @@ public class MainForegroundService extends Service {
 						IntentFilter screenTimeIntentFilter = new IntentFilter();
 						screenTimeIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
 						screenTimeIntentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-						registerReceiver(screenTimeReceiver, screenTimeIntentFilter);
+						if (screenLock.getTimeInSeconds() != 0 && isTimerRunning == false){
+							isTimerRunning = true;
+							new CountDownTimer((screenLock.getTimeInSeconds() * 1000), 1000){
+								@Override
+								public void onTick(long millisUntilFinished) {
+									screenTime += 1;
+									Log.i(TAG, "CountDownTimer " + screenTime);
+								}
+
+								@Override
+								public void onFinish() {
+									Log.i(TAG, "Timer finished");
+									screenTime = 0;
+									isTimerRunning = false;
+									devicePolicyManager.lockNow();
+									registerReceiver(screenTimeReceiver, screenTimeIntentFilter);
+								}
+							}.start();
+						} else {
+							devicePolicyManager.lockNow();
+							registerReceiver(screenTimeReceiver, screenTimeIntentFilter);
+						}
 					} else {
 						if (screenTimeReceiver != null) {
 							unregisterReceiver(screenTimeReceiver);

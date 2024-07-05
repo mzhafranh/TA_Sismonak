@@ -200,6 +200,8 @@
     <string name="permission_not_granted">Permissions not granted by the user.</string>
     <string name="geo_fence_has_been_stopped">Geo fence has been stopped</string>
     <string name="please_enable_the_permissions_in_the_app_settings">Please enable media and location permissions in the app settings.</string>
+    <string name="blocked">blocked</string>
+    <string name="enabled">enabled</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

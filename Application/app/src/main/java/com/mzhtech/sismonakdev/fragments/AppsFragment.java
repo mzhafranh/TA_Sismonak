@@ -85,11 +85,11 @@ public class AppsFragment extends Fragment implements OnAppClickListener {
 	@Override
 	public void onItemClick(final String packageName, String appName, boolean blocked) {
 		if (blocked) {
-			Toast.makeText(context, appName + " " + "blocked", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, appName + " " + getString(R.string.blocked), Toast.LENGTH_SHORT).show();
 			updateAppState(packageName, blocked);
 			
 		} else {
-			Toast.makeText(context, appName + " enabled", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, appName + " " + getString(R.string.enabled), Toast.LENGTH_SHORT).show();
 			updateAppState(packageName, blocked);
 			
 		}

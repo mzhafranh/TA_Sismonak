@@ -4,7 +4,6 @@ import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.util.Log;
 
 import com.mzhtech.sismonakdev.models.ScreenLock;
@@ -23,57 +22,47 @@ public class ScreenTimeReceiver extends BroadcastReceiver {
 	private Calendar calendar;
 	private DevicePolicyManager devicePolicyManager;
 	
-	
 	public ScreenTimeReceiver(ScreenLock screenLock) {
-		allowedTime = screenLock.getTimeInSeconds();
-		calendar = Calendar.getInstance();
+//		allowedTime = screenLock.getTimeInSeconds();
+//		calendar = Calendar.getInstance();
 		Log.i(TAG, "ScreenTimeReceiver: allowedTime: " + allowedTime);
 	}
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-			startTime = System.currentTimeMillis();
+//			startTime = System.currentTimeMillis();
 			devicePolicyManager = (DevicePolicyManager) context.getSystemService(Context.DEVICE_POLICY_SERVICE);
-			restIfDifferentDay();
-			/*new CountDownTimer(allowedTime - screenTime, 1000) {
-				@Override
-				public void onTick(long l) {
-					screenTime += 1000;
-				}
-				
-				@Override
-				public void onFinish() {
-					screenTime = allowedTime;
-					devicePolicyManager.lockNow();
-				}
-			}.start();*/
+//			restIfDifferentDay();
+
+//			Log.i(TAG, "screentime " + screenTime + "allowedTime " + allowedTime);
+//			if (screenTime >= allowedTime) {
+//				devicePolicyManager.lockNow();
+//			}
+			devicePolicyManager.lockNow();
 			
-			if (screenTime >= allowedTime) {
-				devicePolicyManager.lockNow();
-			}
+//		} else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+
+//			endTime = System.currentTimeMillis();
+//			period = endTime - startTime;
+//			lastDayOfYear = dayOfYear;
+//
+//			Log.i(TAG, "onReceive: endTime: " + endTime);
+//			Log.i(TAG, "onReceive: period: " + period);
 			
-		} else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-			endTime = System.currentTimeMillis();
-			period = endTime - startTime;
-			lastDayOfYear = dayOfYear;
-			
-			Log.i(TAG, "onReceive: endTime: " + endTime);
-			Log.i(TAG, "onReceive: period: " + period);
-			
-			if (period != startTime && period != endTime && period != 0) {
-				screenTime += period / 1000;    //seconds
-				Log.i(TAG, "onReceive: screenTime: " + screenTime + "s");
-			}
+//			if (period != startTime && period != endTime && period != 0) {
+//				screenTime += period / 1000;    //seconds
+//				Log.i(TAG, "onReceive: screenTime: " + screenTime + "s");
+//			}
 		}
 		
 		
 	}
 	
-	private void restIfDifferentDay() {
-		dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
-		if (dayOfYear != lastDayOfYear) {
-			screenTime = 0;
-		}
-	}
+//	private void restIfDifferentDay() {
+//		dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+//		if (dayOfYear != lastDayOfYear) {
+//			screenTime = 0;
+//		}
+//	}
 }

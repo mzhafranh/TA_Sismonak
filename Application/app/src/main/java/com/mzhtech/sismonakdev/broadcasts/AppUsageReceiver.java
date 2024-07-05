@@ -41,10 +41,10 @@ public class AppUsageReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
-        Log.i(TAG, "sampai onReceive");
+//        Log.i(TAG, "sampai onReceive");
         Calendar minuteCheck = Calendar.getInstance();
         int minutes = minuteCheck.get(Calendar.MINUTE);
-        Log.i(TAG, "minutes " + minutes);
+//        Log.i(TAG, "minutes " + minutes);
 
         if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
 
@@ -55,7 +55,7 @@ public class AppUsageReceiver extends BroadcastReceiver {
 
                 String uid = user.getUid();
 
-                Log.i(TAG, "onReceive: AppUsageReceiver");
+//                Log.i(TAG, "onReceive: AppUsageReceiver");
 
                 UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
                 Calendar calendar = Calendar.getInstance();
