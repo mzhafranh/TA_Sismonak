@@ -189,4 +189,5 @@
     <string name="please_enable_the_permissions_in_the_app_settings">Tolong berikan izin media dan lokasi untuk Sismonak di pengaturan aplikasi.</string>
     <string name="blocked">diblokir</string>
     <string name="enabled">diaktifkan</string>
+    <string name="sismonak_is_running">Sismonak sedang berjalan dan terhubung ke server cloud</string>
 </resources>

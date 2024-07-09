@@ -24,10 +24,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/connected"
+            android:text="@string/sismonak_is_running"
             android:textAlignment="center"
             android:textColor="@color/custom_blue2"
-            android:textSize="@dimen/text_size_16sp" />
+            android:textSize="@dimen/text_size_16sp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"/>
+
     </LinearLayout>
 
 </LinearLayout>

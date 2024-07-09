@@ -202,6 +202,7 @@
     <string name="please_enable_the_permissions_in_the_app_settings">Please enable media and location permissions in the app settings.</string>
     <string name="blocked">blocked</string>
     <string name="enabled">enabled</string>
+    <string name="sismonak_is_running">Sismonak is running and connected to the cloud server</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

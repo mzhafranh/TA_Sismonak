@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.admin.DevicePolicyManager;
+import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ContentResolver;
@@ -59,6 +60,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,7 +71,6 @@ public class MainForegroundService extends Service {
 	public static final int NOTIFICATION_ID = 27;
 	public static final String TAG = "MainServiceTAG";
 	public static final String BLOCKED_APP_NAME_EXTRA = "com.mzhtech.sismonakdev.services.BLOCKED_APP_NAME_EXTRA";
-
 	public static final String ACTION_REQUEST_UPLOAD = "com.mzhtech.sismonakdev.services.ACTION_REQUEST_UPLOAD";
 	public static final int LOCATION_UPDATE_INTERVAL = 1;    //every 5 seconds
 	public static final int LOCATION_UPDATE_DISPLACEMENT = 5;  //every 10 meters
@@ -311,6 +313,9 @@ public class MainForegroundService extends Service {
 		}
 		if (screenTimeReceiver != null) {
 			unregisterReceiver(screenTimeReceiver);
+		}
+		if (appUsageReceiver != null){
+			unregisterReceiver(appUsageReceiver);
 		}
 	}
 	
@@ -590,38 +595,43 @@ public class MainForegroundService extends Service {
 	}
 
 	private String getLollipopForegroundAppPackageName() {
-		//Log.i(TAG, "getLollipopForegroundAppPackageName: executed");
-		try {
-			UsageStatsManager usageStatsManager = (UsageStatsManager) this.getSystemService(USAGE_STATS_SERVICE);
-			long milliSecs = 60 * 1000;
-			Date date = new Date();
-			List<UsageStats> foregroundApps = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, date.getTime() - milliSecs, date.getTime());
-			if (foregroundApps.size() == 0) {
-				Log.i(TAG, "getLollipopForegroundAppPackageName: queryUsageSize: empty");
-			}
-			
-			
-			long recentTime = 0;
-			String recentPkg = "";
-			for (UsageStats stats : foregroundApps) {
-                /*if (i == 0 && !"com.mzhtech.sismonakdev".equals(stats.getPackageName())) {
-                    Log.i(TAG, "PackageName: " + stats.getPackageName() + " " + stats.getLastTimeStamp());
-                }*/
-				if (stats.getLastTimeStamp() > recentTime) {
-					recentTime = stats.getLastTimeStamp();
-					recentPkg = stats.getPackageName();
+		String topPackageName = "";
+		long endTime = System.currentTimeMillis();
+		long startTime = endTime - 10000; // Check the last 10 seconds
+
+		UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
+		if (usageStatsManager != null) {
+			List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+			if (usageStatsList != null && !usageStatsList.isEmpty()) {
+				SortedMap<Long, UsageStats> sortedMap = new TreeMap<>();
+				for (UsageStats usageStats : usageStatsList) {
+					sortedMap.put(usageStats.getLastTimeUsed(), usageStats);
 				}
-				
+				if (!sortedMap.isEmpty()) {
+					topPackageName = sortedMap.get(sortedMap.lastKey()).getPackageName();
+				}
 			}
-			
-			//Log.i(TAG, "getLollipopForegroundAppPackageName: appPackageName: " + recentPkg);
-			return recentPkg;
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			// Fallback to UsageEvents
+			if (topPackageName.isEmpty()) {
+				UsageEvents usageEvents = usageStatsManager.queryEvents(startTime, endTime);
+				UsageEvents.Event event = new UsageEvents.Event();
+				while (usageEvents.hasNextEvent()) {
+					usageEvents.getNextEvent(event);
+					if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+						topPackageName = event.getPackageName();
+					}
+				}
+			}
 		}
-		
-		
-		return "";
+
+		// Filter out system apps
+		if (topPackageName.equals("com.google.android.gsf")) {
+			topPackageName = "";
+		}
+
+		Log.i("TopApp", "Top app package name: " + topPackageName);
+		return topPackageName;
 	}
 	
 	private String getKitkatForegroundAppPackageName() {
@@ -629,49 +639,37 @@ public class MainForegroundService extends Service {
 		List<ActivityManager.RunningAppProcessInfo> tasks = activityManager.getRunningAppProcesses();
 		return tasks.get(0).processName;
 	}
-	
+
 	class LockerThread implements Runnable {
-		
+
 		private Intent intent = null;
-		
+
 		public LockerThread() {
 			intent = new Intent(MainForegroundService.this, BlockedAppActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		}
-		
+
 		@Override
 		public void run() {
 			while (true) {
-				//Log.i(TAG, "run: thread running");
-				
+//				 Log.i(TAG, "run: thread running");
+
 				if (apps != null) {
-					
+
 					String foregroundAppPackageName = getTopAppPackageName();
-//					Log.i(TAG, "run: foreground app: " + foregroundAppPackageName);
-					
-					//TODO:: need to handle com.google.android.gsf &  com.sec.android.provider.badge
+//					 Log.i(TAG, "run: foreground app: " + foregroundAppPackageName);
+
+					// TODO:: need to handle com.google.android.gsf & com.sec.android.provider.badge
 					for (final App app : apps) {
-						//Log.i(TAG, "run: app name: " + app.getAppName() + " blocked: " + app.isBlocked() + "\n");
+//						 Log.i(TAG, "run: app name: " + app.getAppName() + " blocked: " + app.isBlocked() + "\n");
 						if (foregroundAppPackageName.equals(app.getPackageName()) && app.isBlocked()) {
-							//Log.i(TAG, "run: " + app.getPackageName() + " is running");
+//							 Log.i(TAG, "run: " + app.getPackageName() + " is running");
 							intent.putExtra(BLOCKED_APP_NAME_EXTRA, app.getAppName());
 							startActivity(intent);
-						} /*else if (foregroundAppPackageName.equals(app.getPackageName()) && !app.isBlocked()) {
-                            if (app.getScreenLock() != null) {
-                                if (app.getScreenLock().isLocked() && app.getScreenLock().getTimeInSeconds() > 0) {
-                                    app.getScreenLock().setTimeInSeconds(app.getScreenLock().getTimeInSeconds() - 1);
-                                    Log.i(TAG, "run: TimeInSeconds: " + app.getScreenLock().getTimeInSeconds());
-                                } else if (app.getScreenLock().isLocked() && app.getScreenLock().getTimeInSeconds() <= 0) {
-                                    app.setBlocked(true);
-                                    Log.i(TAG, "run: blocked");
-                                }
-                            } else
-                                Log.i(TAG, "run: ScreenLock is null");
-                        }*/
-						
+						}
 					}
 				}
-				
+
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -679,8 +677,5 @@ public class MainForegroundService extends Service {
 				}
 			}
 		}
-		
 	}
-	
-	
 }

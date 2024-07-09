@@ -17,7 +17,6 @@ public class BlockedAppActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_blocked_app);
-		
 		txtBlockedAppName = findViewById(R.id.txtBlockedAppName);
 		Intent intent = getIntent();
 		String blockedAppName = intent.getStringExtra(BLOCKED_APP_NAME_EXTRA);
