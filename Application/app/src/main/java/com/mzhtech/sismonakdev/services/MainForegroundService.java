@@ -659,7 +659,6 @@ public class MainForegroundService extends Service {
 					String foregroundAppPackageName = getTopAppPackageName();
 //					 Log.i(TAG, "run: foreground app: " + foregroundAppPackageName);
 
-					// TODO:: need to handle com.google.android.gsf & com.sec.android.provider.badge
 					for (final App app : apps) {
 //						 Log.i(TAG, "run: app name: " + app.getAppName() + " blocked: " + app.isBlocked() + "\n");
 						if (foregroundAppPackageName.equals(app.getPackageName()) && app.isBlocked()) {

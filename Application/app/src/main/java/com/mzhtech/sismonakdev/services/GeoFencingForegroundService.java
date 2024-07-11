@@ -74,11 +74,11 @@ public class GeoFencingForegroundService extends Service {
 		}
 
 		Intent notificationIntent = new Intent(this, ParentSignedInActivity.class);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
 		Intent stopIntent = new Intent(this, GeoFencingForegroundService.class);
 		stopIntent.setAction(Constant.ACTION_STOP_GEO_FENCING_SERVICE);
-		PendingIntent stopPendingIntent = PendingIntent.getService(this, Constant.GEO_FENCING_SERVICE_REQUEST_CODE, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent stopPendingIntent = PendingIntent.getService(this, Constant.GEO_FENCING_SERVICE_REQUEST_CODE, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle(notificationContent).setSmallIcon(R.drawable.sismonak_notification).addAction(R.drawable.ic_cancel, getString(R.string.stop), stopPendingIntent).setContentIntent(pendingIntent).build();
 
