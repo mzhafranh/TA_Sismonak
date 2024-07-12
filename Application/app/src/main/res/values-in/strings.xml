@@ -52,7 +52,7 @@
     <string name="email_is_already_in_use">Email sudah digunakan</string>
     <string name="weak_password">Kata sandi lemah</string>
     <string name="sign_up_falied">Pendaftaran Gagal</string>
-    <string name="enter_valid_password">Masukkan kata sandi yang valid</string>
+    <string name="enter_valid_password">Kata sandi harus 6 karakter atau lebih</string>
     <string name="image_uploaded_successfully">Gambar berhasil diunggah</string>
     <string name="image_upload_error">Kesalahan pengunggahan gambar</string>
     <string name="language">Bahasa</string>
@@ -190,4 +190,10 @@
     <string name="blocked">diblokir</string>
     <string name="enabled">diaktifkan</string>
     <string name="sismonak_is_running">Sismonak sedang berjalan dan terhubung ke server cloud</string>
+    <string name="verification_success">Verifikasi email sukses</string>
+    <string name="no">Tidak</string>
+    <string name="yes">Iya</string>
+    <string name="photo_uploaded_succesfully">Foto profil berhasil diunggah</string>
+    <string name="show_password">Tampilkan Sandi</string>
+    <string name="hide_password">Sembunyikan Sandi</string>
 </resources>

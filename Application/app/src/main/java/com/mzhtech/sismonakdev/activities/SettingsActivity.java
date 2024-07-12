@@ -294,7 +294,7 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 								else
 									databaseReference.child("childs").child(uid).child("profileImage").setValue(uri.toString());
 							}
-//							Toast.makeText(SignUpActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
+							Toast.makeText(SettingsActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
 						}
 					});
 				}

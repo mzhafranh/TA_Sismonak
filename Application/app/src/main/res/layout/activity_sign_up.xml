@@ -66,6 +66,16 @@
                     android:hint="@string/password"
                     android:inputType="textPassword" />
 
+                <TextView
+                    android:id="@+id/toggleSignUpPasswordVisibility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    android:text="@string/show_password"
+                    android:textColor="@color/custom_blue3"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:textStyle="bold" />
+
 
             </LinearLayout>
 

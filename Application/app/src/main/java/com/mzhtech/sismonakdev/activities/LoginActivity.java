@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -71,6 +74,8 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 	private String emailPrefs;
 	private String passwordPrefs;
 	private boolean autoLoginPrefs = false;
+	private boolean isPasswordVisible = false;
+	private TextView togglePasswordVisibility;
 
 	private static final int REQUEST_CODE_PERMISSIONS = 101;
 	private static final String[] REQUIRED_PERMISSIONS = new String[] {
@@ -120,6 +125,22 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 
 		checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 		//progressBar.setVisibility(View.GONE);
+
+		togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
+		togglePasswordVisibility.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if(isPasswordVisible){
+					txtLogInPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+					togglePasswordVisibility.setText(R.string.show_password);
+				} else {
+					txtLogInPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+					togglePasswordVisibility.setText(R.string.hide_password);
+				}
+				txtLogInPassword.setSelection(txtLogInPassword.length());
+				isPasswordVisible = !isPasswordVisible;
+			}
+		});
 
 		btnLogin = findViewById(R.id.btnLogin);
 		txtSignUp = findViewById(R.id.txtSignUp);

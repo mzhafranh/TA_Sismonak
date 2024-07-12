@@ -128,6 +128,7 @@ public class AccountVerificationActivity extends AppCompatActivity {
 										handler.removeCallbacks(emailVerificationRunnable);
 										addUserToDB();
 										uploadProfileImage();
+										Toast.makeText(AccountVerificationActivity.this, getString(R.string.verification_success), Toast.LENGTH_SHORT).show();
 										if (parent){
 											redirectToLogin();
 										}

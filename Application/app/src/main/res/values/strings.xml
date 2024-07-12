@@ -58,7 +58,7 @@
     <string name="email_is_already_in_use">Email is already in use</string>
     <string name="weak_password">Weak password</string>
     <string name="sign_up_falied">Signup Failed</string>
-    <string name="enter_valid_password">Enter a valid password</string>
+    <string name="enter_valid_password">Password must be 6 characters or longer</string>
     <string name="kid" translatable="false">Kid</string>
     <string name="safe" translatable="false">Safe</string>
     <string name="sis" translatable="false">Sis</string>
@@ -203,6 +203,12 @@
     <string name="blocked">blocked</string>
     <string name="enabled">enabled</string>
     <string name="sismonak_is_running">Sismonak is running and connected to the cloud server</string>
+    <string name="verification_success">Email verification success</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="photo_uploaded_succesfully">Profile photo uploaded successfully</string>
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>
