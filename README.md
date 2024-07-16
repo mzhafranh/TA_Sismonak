@@ -28,6 +28,7 @@
 [<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_9.png" alt="screenshot sismonak 9" width="200" hspace="10" vspace="10"/>]()
 [<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_10.png" alt="screenshot sismonak 10" width="200" hspace="10" vspace="10"/>]()
 [<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_11.png" alt="screenshot sismonak 11" width="200" hspace="10" vspace="10"/>]()
+[<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_12.png" alt="screenshot sismonak 12" width="200" hspace="10" vspace="10"/>]()
 
 ## Panduan setup
 ### Video 
