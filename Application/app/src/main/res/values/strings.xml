@@ -166,7 +166,7 @@
     <string name="connected">Connected</string>
     <string name="please_enable_your_gps">Please enable your GPS</string>
     <string name="please_allow_the_following_permissions">Please accept the following permission to allow Sismonak to function properly</string>
-    <string name="about_message">Sismonak is a free and open source android parental control app which allows parents to keep their children\'s activity under control. Sismonak is a development of existing project known as KidSafe by Mahmoud Mansour and Khalid Samir. Sismonak was as a graduation project by the members specified below</string>
+    <string name="about_message">Sismonak is a free and open source android parental control app which allows parents to keep their children\'s activity under control. Sismonak is a development of existing project known as KidSafe by Mahmoud Mansour and Khalid Samir. Sismonak was a graduation project by the members specified below</string>
     <string name="many_thanks_goes_to_freepik_and_smashiocns_for_the_graphics">Many thanks goes to freepik.com, flaticon.com, and smashicons.com for the graphics</string>
     <string name="developers">Developer</string>
     <string name="mahmoud_mansour">Mahmoud Mansour</string>

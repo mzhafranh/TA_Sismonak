@@ -226,8 +226,6 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 	private void signUpRoutine(String userEmail) {
 		uid = auth.getCurrentUser().getUid();
 		Log.i(TAG, "signUpRoutine: UID: " + uid);
-//		addUserToDB(parentEmail, parent);
-//		uploadProfileImage(parent);
 		startAccountVerificationActivity(userEmail, uid, parentEmail);
 	}
 
@@ -235,19 +233,11 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		uid = auth.getCurrentUser().getUid();
 		userEmail = auth.getCurrentUser().getEmail();
 		Log.i(TAG, "signUpRoutineChild: UID: " + uid);
-//		addUserToDB(parentEmail, parent);
-//		uploadProfileImage(parent);
 		startAccountVerificationActivity(userEmail, uid, parentEmail);
 	}
 	
 	private void startAccountVerificationActivity(String userEmail, String uid, String parentEmail) {
 		Intent intent = new Intent(this, AccountVerificationActivity.class);
-//		intent.putExtra("parentEmail",parentEmail);
-//		intent.putExtra("isParent", parent);
-//		intent.putExtra("googleAuth", googleAuth);
-//		intent.putExtra("signUpEmail", txtSignUpEmail.getText().toString().toLowerCase());
-//		intent.putExtra("signUpName", txtSignUpName.getText().toString().replaceAll("\\s+$", ""));
-//		intent.putExtra("uid", uid);
 		if (!googleAuth){
 			intent.putExtra("imageUri",imageUri.toString());
 		} else {
@@ -262,62 +252,7 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 		SharedPrefsUtils.setStringPreference(this, "uid", uid);
 		startActivity(intent);
 	}
-	
-//	private void uploadProfileImage(final boolean parent) {
-//		if (googleAuth && imageUri == null) {
-//			imageUri = auth.getCurrentUser().getPhotoUrl();
-//			if (parent)
-//				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri.toString());
-//			else
-//				databaseReference.child("childs").child(uid).child("profileImage").setValue(imageUri.toString());
-//
-//		} else if (!googleAuth) {
-//			final StorageReference profileImageStorageReference = storageReference.child(uid + "_profileImage");
-//			profileImageStorageReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//				@Override
-//				public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//					profileImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//						@Override
-//						public void onSuccess(Uri uri) {
-//							if (uri != null) {
-//								if (parent)
-//									databaseReference.child("parents").child(uid).child("profileImage").setValue(uri.toString());
-//								else
-//									databaseReference.child("childs").child(uid).child("profileImage").setValue(uri.toString());
-//							}
-////							Toast.makeText(SignUpActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
-//						}
-//					});
-//				}
-//			}).addOnFailureListener(new OnFailureListener() {
-//				@Override
-//				public void onFailure(@NonNull Exception e) {
-//					Toast.makeText(SignUpActivity.this, getString(R.string.image_upload_error), Toast.LENGTH_SHORT).show();
-//				}
-//			});
-//		}
-//	}
-	
-//	private void addUserToDB(String parentEmail, boolean parent) {
-//		String email;
-//		String name;
-//		if (googleAuth) {
-//			email = auth.getCurrentUser().getEmail();
-//			name = auth.getCurrentUser().getDisplayName();
-//		} else {
-//			email = txtSignUpEmail.getText().toString().toLowerCase();
-//			name = txtSignUpName.getText().toString().replaceAll("\\s+$", "");
-//		}
-//		Log.i(TAG, "signUpRoutine: UID: " + uid);
-//
-//		if (parent) {
-//			Parent p = new Parent(name, email);
-//			databaseReference.child("parents").child(uid).setValue(p);
-//		} else {
-//			Child c = new Child(name, email, parentEmail);
-//			databaseReference.child("childs").child(uid).setValue(c);
-//		}
-//	}
+
 	
 	private void startLoadingFragment(LoadingDialogFragment loadingDialogFragment) {
 		loadingDialogFragment.setCancelable(false);
@@ -444,7 +379,6 @@ public class SignUpActivity extends AppCompatActivity implements OnConfirmationL
 			public void onComplete(@NonNull Task<AuthResult> task) {
 				if (task.isSuccessful()) {
 					Log.i(TAG, "onComplete: Authentication Succeeded");
-					//Toast.makeText(SignUpActivity.this, getString(R.string.authentication_succeeded), Toast.LENGTH_SHORT).show();
 					FirebaseUser user = auth.getCurrentUser();
 					String userEmail = user.getEmail();
 					uid = user.getUid();

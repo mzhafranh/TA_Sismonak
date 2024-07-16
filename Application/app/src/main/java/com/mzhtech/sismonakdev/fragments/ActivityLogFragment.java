@@ -18,9 +18,6 @@ import com.mzhtech.sismonakdev.adapters.ActivityLogFragmentPagerAdapter;
 
 public class ActivityLogFragment extends Fragment {
 	public static final String TAG = "ActivityLogTAG";
-    /*private HashMap<String, Message> messages;
-    private HashMap<String, Call> calls;
-    private ArrayList<Contact> contacts;*/
 	
 	@Nullable
 	@Override
@@ -30,7 +27,6 @@ public class ActivityLogFragment extends Fragment {
 	
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		//getData();
 		super.onViewCreated(view, savedInstanceState);
 
 		Log.i(TAG, "sampai onViewCreated ActivityLogFragment");
@@ -46,13 +42,11 @@ public class ActivityLogFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		setupViewPager();
-		Log.i(TAG, "sampai onResume ActivityLogFragment");
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.i(TAG, "sampai onPause ActivityLogFragment");
 	}
 
 	private void setupViewPager() {
@@ -62,22 +56,6 @@ public class ActivityLogFragment extends Fragment {
 		TabLayout tabLayout = getView().findViewById(R.id.activityLogTabLayout);
 		tabLayout.setupWithViewPager(viewPager);
 	}
-
-    /*private void getData() {
-        Bundle bundle = getActivity().getIntent().getExtras();
-        if (bundle != null) {
-            messages = (HashMap<String, Message>) bundle.getSerializable(CHILD_MESSAGES_EXTRA);
-            calls = (HashMap<String, Call>) bundle.getSerializable(CHILD_CALLS_EXTRA);
-            contacts = bundle.getParcelableArrayList(Constant.CHILD_CONTACTS_EXTRA);
-
-        }
-
-        for (String key : messages.keySet()) {
-            Log.i(TAG, "getData: messageBody: " + messages.get(key).getMessageBody());
-            Log.i(TAG, "getData: senderPhoneNumber: " + messages.get(key).getSenderPhoneNumber());
-            Log.i(TAG, "getData: timeReceived: " + messages.get(key).getTimeReceived());
-        }
-    }*/
 	
 	private PagerAdapter setupActivityLogFragmentPagerAdapter() {
 		ActivityLogFragmentPagerAdapter pagerAdapter = new ActivityLogFragmentPagerAdapter(getChildFragmentManager());

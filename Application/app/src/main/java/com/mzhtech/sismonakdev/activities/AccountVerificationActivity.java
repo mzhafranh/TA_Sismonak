@@ -58,9 +58,6 @@ public class AccountVerificationActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_account_verification);
 		sendVerificationMessage();
 
-//		if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
-//			startActivity(new Intent(this, LoginActivity.class));
-
 		auth = FirebaseAuth.getInstance();
 		firebaseDatabase = FirebaseDatabase.getInstance();
 		databaseReference = firebaseDatabase.getReference("users");
@@ -68,17 +65,11 @@ public class AccountVerificationActivity extends AppCompatActivity {
 		storageReference = firebaseStorage.getReference("profileImages");
 		handler = new Handler();
 
-//		googleAuth = getIntent().getBooleanExtra("googleAuth",false);
 		googleAuth = SharedPrefsUtils.getBooleanPreference(this, "googleAuth", false);
-//		signUpEmail = getIntent().getStringExtra("signUpEmail");
 		signUpEmail = SharedPrefsUtils.getStringPreference(this, "signUpEmail","");
-//		signUpName = getIntent().getStringExtra("signUpName");
 		signUpName = SharedPrefsUtils.getStringPreference(this, "signUpName","");
-//		parent = getIntent().getBooleanExtra("isParent",true);
 		parent = SharedPrefsUtils.getBooleanPreference(this, "isParent", true);
-//		uid = getIntent().getStringExtra("uid");
 		uid = SharedPrefsUtils.getStringPreference(this, "uid", "testAccount");
-//		parentEmail = getIntent().getStringExtra("parentEmail");
 		parentEmail= SharedPrefsUtils.getStringPreference(this, "parentEmail", "");
 		userEmail = SharedPrefsUtils.getStringPreference(this, "userEmail", "");
 		if (getIntent().getStringExtra("imageUri") == null){
@@ -210,7 +201,6 @@ public class AccountVerificationActivity extends AppCompatActivity {
 								else
 									databaseReference.child("childs").child(uid).child("profileImage").setValue(uri.toString());
 							}
-//							Toast.makeText(SignUpActivity.this, getString(R.string.image_uploaded_successfully), Toast.LENGTH_SHORT).show();
 						}
 					});
 				}

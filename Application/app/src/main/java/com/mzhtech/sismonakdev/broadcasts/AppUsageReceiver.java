@@ -41,21 +41,11 @@ public class AppUsageReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
-//        Log.i(TAG, "sampai onReceive");
         Calendar minuteCheck = Calendar.getInstance();
         int minutes = minuteCheck.get(Calendar.MINUTE);
-//        Log.i(TAG, "minutes " + minutes);
 
         if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-
-//            Calendar minuteCheck = Calendar.getInstance();
-//            int minutes = minuteCheck.get(Calendar.MINUTE);
-
-//            if (minutes == 59) {
-
                 String uid = user.getUid();
-
-//                Log.i(TAG, "onReceive: AppUsageReceiver");
 
                 UsageStatsManager usm = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
                 Calendar calendar = Calendar.getInstance();
@@ -103,8 +93,6 @@ public class AppUsageReceiver extends BroadcastReceiver {
                     databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("totalAppDuration").setValue(totalAppDuration);
 
                     if (entryList.size() > 0) {
-    //                    top1_app.setText(entryList.get(0).getKey());
-    //                    top1_usage.setText(formatDuration(entryList.get(0).getValue()));
                         databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top1_app").setValue(getAppNameFromPackage(entryList.get(0).getKey(), pm));
                         databaseReference.child("childs").child(uid).child("stat").child(currentDate).child("top1_usage").setValue(entryList.get(0).getValue());
                         totalTop5Duration += entryList.get(0).getValue();

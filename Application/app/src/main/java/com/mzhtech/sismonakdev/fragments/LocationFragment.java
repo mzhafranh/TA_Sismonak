@@ -182,7 +182,6 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 		super.onPause();
 		Log.i(TAG, "onPause LocationFragment");
 		//this will refresh the osmdroid configuration on resuming.
-		//if you make changes to the configuration, use
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		Configuration.getInstance().save(context, prefs);
 		mapView.onPause();  //needed for compass, my location overlays, v6.0.0 and up
@@ -283,28 +282,11 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 	}
 	
 	private void addOverlays() {
-		
-		
-		//CompassOverlay compassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context), mapView);
-		//compassOverlay.enableCompass();
-		
 		RotationGestureOverlay rotationGestureOverlay = new RotationGestureOverlay(context, mapView);
 		rotationGestureOverlay.setEnabled(true);
-		
-		//DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-		//ScaleBarOverlay scaleBarOverlay = new ScaleBarOverlay(mapView);
-		//scaleBarOverlay.setCentred(true);
-		//scaleBarOverlay.setScaleBarOffset(displayMetrics.widthPixels / 2, 10);
-		
-		//MinimapOverlay minimapOverlay = new MinimapOverlay(context, mapView.getTileRequestCompleteHandler());
-		//minimapOverlay.setWidth(displayMetrics.widthPixels / 5);
-		//minimapOverlay.setHeight(displayMetrics.heightPixels / 5);
-		
-		//mapView.getOverlays().add(locationNewOverlay);
-		//mapView.getOverlays().add(compassOverlay);
+
 		mapView.getOverlays().add(rotationGestureOverlay);
-		//mapView.getOverlays().add(scaleBarOverlay);
-		//mapView.getOverlays().add(minimapOverlay);
+
 	}
 	
 	private void getUserLocation() {
@@ -315,7 +297,6 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			public void onLocationChanged(android.location.Location location) {
 				if (location != null) {
 					userLocation = new Location(location.getLatitude(), location.getLongitude());
-//					Log.i(TAG, "onLocationChanged: location lat: " + location.getLatitude() + "location long: " + location.getLongitude());
 					addMarkerForParent(userLocation);
 				}
 			}
@@ -365,8 +346,6 @@ public class LocationFragment extends Fragment implements OnGeoFenceSettingListe
 			Log.i(TAG, e.getMessage());
 		}
 
-//        mapController.setCenter(parentGeoPoint);
-		
 	}
 	
 	@Override

@@ -34,7 +34,6 @@ public class GeoFencingForegroundService extends Service {
 	private FirebaseDatabase firebaseDatabase;
 	private DatabaseReference databaseReference;
 	private String lastChildEmail = null;
-//	public static final String CHANNEL_ID = "GeoFencingAlertsChannel";
 
 	@Override
 	public void onCreate() {
@@ -136,8 +135,6 @@ public class GeoFencingForegroundService extends Service {
 		Log.i(TAG, "showNotification: key: " + dataSnapshot.getKey());
 		Log.i(TAG, "showNotification: value: " + dataSnapshot.getValue());
 
-		//Log.i(TAG, "showNotification: children: " + dataSnapshot.getChildren());
-		//Log.i(TAG, "showNotification: childrenCount" + dataSnapshot.getChildrenCount());
 		String warningMessage = " is out of the fence";
 		String languageCode = SharedPrefsUtils.getStringPreference(this, Constant.APP_LANGUAGE, "en"); // Example: retrieve language code from shared preferences
 
@@ -157,7 +154,6 @@ public class GeoFencingForegroundService extends Service {
 
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		notificationManager.notify(1, builder.build());
-//		stopSelf();
 		closeFencingService();
 	}
 

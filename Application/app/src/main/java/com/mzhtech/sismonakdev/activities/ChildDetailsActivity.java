@@ -36,8 +36,8 @@ public class ChildDetailsActivity extends AppCompatActivity {
 	private ImageButton btnBack;
 	private ImageButton btnSettings;
 	private TextView txtTitle;
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,56 +65,46 @@ public class ChildDetailsActivity extends AppCompatActivity {
 			}
 		});
 		txtTitle = findViewById(R.id.txtTitle);
-		
+
 		Intent intent = getIntent();
 		String childName = intent.getStringExtra(CHILD_NAME_EXTRA);
-		//final String childEmail = intent.getStringExtra(CHILD_EMAIL_EXTRA);
 		apps = intent.getParcelableArrayListExtra(APPS_EXTRA);
-        /*for (App app : apps) {
-            Log.i(TAG, "onItemClick: appName: " + app.getAppName() + " " + "packageName" + app.getPackageName());
 
-        }*/
-		
-		//setTitle(childName + "'s device");
 		String title = childName;
 		txtTitle.setText(title);
-		
+
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new AppsFragment()).commit();
-		
+
 		BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
 		bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 				Fragment selectedFragment = null;
-				
+
 				Bundle bundle = new Bundle();
-				
+
 				switch (menuItem.getItemId()) {
 					case R.id.navApps:
 						selectedFragment = new AppsFragment();
-						//bundle.putParcelableArrayList(APPS_EXTRA, apps);  //not needed since we're sending it from
-						//selectedFragment.setArguments(bundle);            //the ParentSignedInActivity
 						break;
 					case R.id.navStat:
 						selectedFragment = new StatFragment();
 						break;
 					case R.id.navLocation:
 						selectedFragment = new LocationFragment();
-						//bundle.putString(CHILD_EMAIL_EXTRA, childEmail);
-						//selectedFragment.setArguments(bundle);
 						break;
 					case R.id.navActivityLog:
 						selectedFragment = new ActivityLogFragment();
 						break;
-					
+
 				}
-				
+
 				getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, selectedFragment).commit();
 				return true;
 			}
 		});
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		startActivity(new Intent(this, ParentSignedInActivity.class));

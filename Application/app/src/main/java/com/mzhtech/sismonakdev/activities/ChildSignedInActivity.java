@@ -52,9 +52,7 @@ public class ChildSignedInActivity extends AppCompatActivity implements OnPermis
 			user = auth.getCurrentUser();
 			
 			String email = user.getEmail();
-            /*PersistableBundle bundle = new PersistableBundle();
-            bundle.putString(CHILD_EMAIL, email);*/
-			
+
 			toolbar = findViewById(R.id.toolbar);
 			btnBack = findViewById(R.id.btnBack);
 			btnBack.setImageDrawable(getResources().getDrawable(R.drawable.ic_home_));
@@ -68,7 +66,6 @@ public class ChildSignedInActivity extends AppCompatActivity implements OnPermis
 			txtTitle = findViewById(R.id.txtTitle);
 			txtTitle.setText(getString(R.string.home));
 			
-			//schedualJob(bundle);
 			startMainForegroundService(email);
 			
 			if (!Validators.isLocationOn(this)) startPermissionExplanationDialogFragment();
@@ -122,7 +119,6 @@ public class ChildSignedInActivity extends AppCompatActivity implements OnPermis
 	
 	@Override
 	public void onBackPressed() {
-//		moveTaskToBack(true);
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 		intent.addCategory(Intent.CATEGORY_HOME);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -145,32 +141,4 @@ public class ChildSignedInActivity extends AppCompatActivity implements OnPermis
 		Intent intent = new Intent(ChildSignedInActivity.this, SettingsActivity.class);
 		startActivity(intent);
 	}
-	
-    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void schedualJob(PersistableBundle bundle) {
-        ComponentName componentName = new ComponentName(this, UploadAppsService.class);
-        JobInfo jobInfo = new JobInfo.Builder(JOB_ID, componentName)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setPersisted(true)
-                .setPeriodic(15 * 60 * 1000)
-                .setExtras(bundle)
-                .build();
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        int resultCode = jobScheduler.schedule(jobInfo);
-
-        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-            //Success
-        } else {
-            //Failure
-        }
-    }*/
-
-    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void cancelJob() {
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        jobScheduler.cancel(JOB_ID);
-        //Job cancelled
-    }*/
-	
-	
 }

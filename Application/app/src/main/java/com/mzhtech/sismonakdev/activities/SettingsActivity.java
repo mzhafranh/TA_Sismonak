@@ -50,7 +50,6 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 	private Button btnChangePassword;
 	private Button btnDeleteAccount;
 	private Button btnAbout;
-	//private Button btnRateUs;   //Won't be uploaded to the play store duo to violation of privacy
 	private Button btnSendFeedBack;
 	private Button btnVisitWebsite;
 	private ImageButton btnBack;
@@ -145,17 +144,7 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 				showAbout();
 			}
 		});
-		
-		
-		/*btnRateUs = findViewById(R.id.btnRateUs);
-		btnRateUs.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				rateTheApp();
-			}
-		});*/
-		
-		
+
 		btnSendFeedBack = findViewById(R.id.btnSendFeedBack);
 		btnSendFeedBack.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -178,11 +167,6 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 	private void showAbout() {
 		startActivity(new Intent(this, AboutActivity.class));
 	}
-	
-	/*private void rateTheApp() {
-		Toast.makeText(this, "rateTheApp", Toast.LENGTH_SHORT).show();
-		
-	}*/
 	
 	private void SendFeedBack() {
 		String body = null;
@@ -240,11 +224,6 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 		} else if (language.equals("Bahasa Indonesia (ID)") && !appLanguage.equals("in")) {
 			LocaleUtils.setLocale(this, "in");
 		}
-//		else if (language.equals("Arabic") && !appLanguage.equals("ar")) {
-//			LocaleUtils.setLocale(this, "ar");
-//		}
-
-//		Log.d("LanguageSelection", "Selected language: " + language + " " + appLanguage);
 		restartApp();
 		
 	}
@@ -274,7 +253,6 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 
 	private void uploadProfileImage(String imageUri) {
 		if (googleAuth && imageUri == null) {
-//			imageUri = auth.getCurrentUser().getPhotoUrl().toString();
 			if (parent)
 				databaseReference.child("parents").child(uid).child("profileImage").setValue(imageUri);
 			else
@@ -314,7 +292,6 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 	
 	@Override
 	public void onConfirmationCancel() {
-		//DO NOTHING
 	}
 	
 	@Override

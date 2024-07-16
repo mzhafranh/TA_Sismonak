@@ -72,8 +72,8 @@ public class MainForegroundService extends Service {
 	public static final String TAG = "MainServiceTAG";
 	public static final String BLOCKED_APP_NAME_EXTRA = "com.mzhtech.sismonakdev.services.BLOCKED_APP_NAME_EXTRA";
 	public static final String ACTION_REQUEST_UPLOAD = "com.mzhtech.sismonakdev.services.ACTION_REQUEST_UPLOAD";
-	public static final int LOCATION_UPDATE_INTERVAL = 1;    //every 5 seconds
-	public static final int LOCATION_UPDATE_DISPLACEMENT = 5;  //every 10 meters
+	public static final int LOCATION_UPDATE_INTERVAL = 1;    //every 1 seconds
+	public static final int LOCATION_UPDATE_DISPLACEMENT = 5;  //every 5 meters
 	private ExecutorService executorService;
 	private ArrayList<App> apps;
 	private PhoneStateReceiver phoneStateReceiver;
@@ -115,9 +115,7 @@ public class MainForegroundService extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		//String childEmail = intent.getStringExtra(CHILD_EMAIL);
-		//String notificationContent = "Monitoring device";
-		
+
 		FirebaseAuth auth = FirebaseAuth.getInstance();
 		FirebaseUser user = auth.getCurrentUser();
 		childEmail = user.getEmail();
@@ -127,7 +125,6 @@ public class MainForegroundService extends Service {
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 		
 		Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-				//.setContentTitle(notificationContent)
 				.setSmallIcon(R.drawable.sismonak_notification).setContentIntent(pendingIntent).build();
 		
 		startForeground(NOTIFICATION_ID, notification);
@@ -172,40 +169,6 @@ public class MainForegroundService extends Service {
 			
 			}
 		});
-
-        /*Query webFilterQuery = databaseReference.child("childs").child(uid).child("webFilter");
-        webFilterQuery.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    boolean checked = (boolean) dataSnapshot.getValue();
-                    if (checked) {
-                        Toast.makeText(MainForegroundService.this, "Web Filter Enabled", Toast.LENGTH_SHORT).show();
-                        *//*String primaryDNS = "185.228.168.168";
-                        String secondaryDNS = "185.228.169.168";
-                        changeDNS(primaryDNS, secondaryDNS);
-                        String newDNS1 = Settings.System.getString(getContentResolver(), Settings.System.WIFI_STATIC_DNS1);
-                        String newDNS2 = Settings.System.getString(getContentResolver(), Settings.System.WIFI_STATIC_DNS2);
-                        Log.i(TAG, "onDataChange: new DNS1: " + newDNS1);
-                        Log.i(TAG, "onDataChange: new DNS2: " + newDNS2);*//*
-                    } else {
-                        Toast.makeText(MainForegroundService.this, "Web Filter Disabled", Toast.LENGTH_SHORT).show();
-                        *//*String primaryDNS = "0.0.0.0";
-                        String secondaryDNS = "0.0.0.0";
-                        changeDNS(primaryDNS, secondaryDNS);
-                        String newDNS1 = Settings.System.getString(getContentResolver(), Settings.System.WIFI_STATIC_DNS1);
-                        String newDNS2 = Settings.System.getString(getContentResolver(), Settings.System.WIFI_STATIC_DNS2);
-                        Log.i(TAG, "onDataChange: new DNS1: " + newDNS1);
-                        Log.i(TAG, "onDataChange: new DNS2: " + newDNS2);*//*
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 		
 		Query screenTimeQuery = databaseReference.child("childs").child(uid).child("screenLock");
 		screenTimeQuery.addValueEventListener(new ValueEventListener() {
@@ -269,7 +232,6 @@ public class MainForegroundService extends Service {
 		appInstalledReceiver = new AppInstalledReceiver(user);
 		IntentFilter appInstalledIntentFilter = new IntentFilter();
 		appInstalledIntentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
-		//appInstalledIntentFilter.addAction(Intent.ACTION_PACKAGE_INSTALL);
 		appInstalledIntentFilter.addDataScheme("package");
 		registerReceiver(appInstalledReceiver, appInstalledIntentFilter);
 		
@@ -330,18 +292,13 @@ public class MainForegroundService extends Service {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				if (dataSnapshot.exists()) {
-					//Log.i(TAG, "onDataChange: dataSnapshot value: "+dataSnapshot.getValue());
-					//Log.i(TAG, "onDataChange: dataSnapshot as a string: "+dataSnapshot.toString());
-					//Log.i(TAG, "onDataChange: dataSnapshot children: " + dataSnapshot.getChildren());
-					//Log.i(TAG, "onDataChange: dataSnapshot key: " + dataSnapshot.getKey());
 					
 					DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
 					Child child = nodeShot.getValue(Child.class);
 					apps = child.getApps();
 					
 					Log.i(TAG, "onDataChange: child name: " + child.getName());
-					//updateAppStats(apps);
-					
+
 				}
 			}
 			
@@ -360,8 +317,6 @@ public class MainForegroundService extends Service {
 			@Override
 			public void onLocationChanged(Location location) {
 				if (location != null) {
-//					Log.i(TAG, "onLocationChanged: latitude: " + location.getLatitude());
-//					Log.i(TAG, "onLocationChanged: longitude: " + location.getLongitude());
 					addUserLocationToDatabase(location, uid);
 				} else {
 					Log.i(TAG, "onLocationChanged: location is null");
@@ -410,13 +365,6 @@ public class MainForegroundService extends Service {
 	
 	private void setFence(DataSnapshot dataSnapshot) {
 		com.mzhtech.sismonakdev.models.Location childLocation = dataSnapshot.getValue(com.mzhtech.sismonakdev.models.Location.class);
-//		Log.i(TAG, "setFence: getLatitude " + childLocation.getLatitude());
-//		Log.i(TAG, "setFence: getLongitude " + childLocation.getLongitude());
-//		Log.i(TAG, "setFence: isGeoFence " + childLocation.isGeoFence());
-//		Log.i(TAG, "setFence: isOutOfFence " + childLocation.isOutOfFence());
-//		Log.i(TAG, "setFence: getFenceCenterLatitude " + childLocation.getFenceCenterLatitude());
-//		Log.i(TAG, "setFence: getFenceCenterLongitude " + childLocation.getFenceCenterLongitude());
-//		Log.i(TAG, "setFence: getFenceDiameter " + childLocation.getFenceDiameter());
 
 		Log.i(TAG, "setFence: before if isGeoFence");
 
@@ -497,11 +445,6 @@ public class MainForegroundService extends Service {
 		}
 		
 	}
-
-    /*private void changeDNS(String primaryDNS, String secondaryDNS) {
-        Settings.System.putString(getContentResolver(), Settings.System.WIFI_STATIC_DNS1, primaryDNS);  //TODO:: DEPRECATED
-        Settings.System.putString(getContentResolver(), Settings.System.WIFI_STATIC_DNS2, secondaryDNS);
-    }*/
 	
 	public ArrayList<Contact> getContacts() {
 		ArrayList<Contact> contacts = new ArrayList<>();
@@ -551,25 +494,6 @@ public class MainForegroundService extends Service {
 				appsList.add(new App((String) applicationInfo.loadLabel(packageManager), applicationInfo.packageName, false));
 			}
 		}
-        /*if (onlineAppsList.isEmpty()) {
-            Log.i(TAG, "prepareData: online appsList empty");
-            for (ApplicationInfo applicationInfo : applicationInfoList) {
-                if (applicationInfo.packageName != null) {
-                    appsList.add(new App((String) applicationInfo.loadLabel(packageManager), (String) applicationInfo.packageName, false));
-                }
-            }
-            //if not, check the app's blocked attribute and update it.
-        } else {
-            for (ApplicationInfo applicationInfo : applicationInfoList) {
-                for (App app : onlineAppsList) {
-                    if (app.getPackageName().equals((String) applicationInfo.packageName)) {
-                        appsList.add(new App((String) applicationInfo.loadLabel(packageManager), (String) applicationInfo.packageName, app.isBlocked()));
-                    }
-                }
-
-            }
-
-        }*/
 		
 		uploadApps(appsList);
 		
@@ -652,17 +576,13 @@ public class MainForegroundService extends Service {
 		@Override
 		public void run() {
 			while (true) {
-//				 Log.i(TAG, "run: thread running");
 
 				if (apps != null) {
 
 					String foregroundAppPackageName = getTopAppPackageName();
-//					 Log.i(TAG, "run: foreground app: " + foregroundAppPackageName);
 
 					for (final App app : apps) {
-//						 Log.i(TAG, "run: app name: " + app.getAppName() + " blocked: " + app.isBlocked() + "\n");
 						if (foregroundAppPackageName.equals(app.getPackageName()) && app.isBlocked()) {
-//							 Log.i(TAG, "run: " + app.getPackageName() + " is running");
 							intent.putExtra(BLOCKED_APP_NAME_EXTRA, app.getAppName());
 							startActivity(intent);
 						}

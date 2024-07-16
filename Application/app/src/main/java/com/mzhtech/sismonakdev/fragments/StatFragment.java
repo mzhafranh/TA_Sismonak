@@ -39,14 +39,8 @@ public class StatFragment extends Fragment {
     public static final String TAG = "StatFragmentTAG";
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private ArrayList<App> apps;
-    private RecyclerView recyclerViewStat;
     private Context context;
     private String childEmail;
-    private String appName;
-    private String packageName;
-    private Bundle bundle;
-
     private TextView total_usage;
     private TextView top1_app;
     private TextView top1_usage;
@@ -86,11 +80,6 @@ public class StatFragment extends Fragment {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         String currentDate = formatter.format(new Date());
 
-//        recyclerViewStat = view.findViewById(R.id.recyclerViewStat);
-//        recyclerViewStat.setHasFixedSize(true);
-//        recyclerViewStat.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         total_usage = view.findViewById(R.id.total_usage);
         top1_app = view.findViewById(R.id.top1_app);
         top1_usage = view.findViewById(R.id.top1_usage);
@@ -107,7 +96,6 @@ public class StatFragment extends Fragment {
 
         pie_chart = view.findViewById(R.id.pie_chart);
 
-//        initializeChart();
         getData();
 
     }
@@ -121,33 +109,6 @@ public class StatFragment extends Fragment {
         minutes = minutes % 60;
         return String.format("%d %s %02d %s", hours, hour_string, minutes, minute_string);
     }
-
-//    private void initializeChart() {
-//        ArrayList<PieEntry> durations = new ArrayList<>();
-//        durations.add(new PieEntry(200, "#1"));
-//        durations.add(new PieEntry(200, "#2"));
-//        durations.add(new PieEntry(200, "#3"));
-//        durations.add(new PieEntry(200, "#4"));
-//        durations.add(new PieEntry(200, "#5"));
-//        durations.add(new PieEntry(200, "Other"));
-//
-//        PieDataSet pieDataSet = new PieDataSet(durations, "");
-//        pieDataSet.setColors(new int[]{Color.rgb(69, 181, 255), Color.rgb(64, 168, 237), Color.rgb(55, 144, 204), Color.rgb(46, 121, 171), Color.rgb(40, 105, 148), Color.rgb(34, 88, 125)});
-//        pieDataSet.setValueTextColor(Color.BLACK);
-//        pieDataSet.setValueTextSize(16f);
-//        pieDataSet.setDrawValues(false);
-//
-//        PieData pieData = new PieData(pieDataSet);
-//        pie_chart.setData(pieData);
-//        pie_chart.getDescription().setEnabled(false);
-//        pie_chart.setCenterText("Usage");
-//        pie_chart.setCenterTextSize(16f);
-//        pie_chart.setUsePercentValues(true);
-//        pie_chart.getLegend().setEnabled(false);
-//        pie_chart.setNoDataText("No current data");
-//        pie_chart.animateXY(500, 500);
-//        pie_chart.invalidate();
-//    }
 
     private void updateChart(ArrayList<Long> usage) {
         ArrayList<PieEntry> durations = new ArrayList<>();
@@ -163,16 +124,10 @@ public class StatFragment extends Fragment {
         pieDataSet.setValueTextColor(Color.BLACK);
         pieDataSet.setValueTextSize(16f);
         pieDataSet.setValueFormatter(new CustomValueFormatter(5.0f));
-//        pieDataSet.setDrawValues(false);
-//        pieDataSet.setValueLinePart1OffsetPercentage(80.f);
-//        pieDataSet.setValueLinePart1Length(0.4f);
-//        pieDataSet.setValueLinePart2Length(0.4f);
-//        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
         PieData pieData = new PieData(pieDataSet);
         pie_chart.setData(pieData);
         pie_chart.getDescription().setEnabled(false);
-//        pie_chart.setCenterText(getContext().getString(R.string.graph));
         pie_chart.setCenterTextSize(16f);
         pie_chart.setUsePercentValues(true);
         pie_chart.getLegend().setEnabled(false);
@@ -244,15 +199,11 @@ public class StatFragment extends Fragment {
                         Log.w("Firebase", "Failed to read value.", databaseError.toException());
                     }
                 });
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
-
-
     }
 
 }

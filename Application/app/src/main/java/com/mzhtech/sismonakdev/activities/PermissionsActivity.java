@@ -61,7 +61,6 @@ public class PermissionsActivity extends AppCompatActivity implements OnFragment
 	
 	@Override
 	public void onBackPressed() {
-		//No going back to childSignedIn activity
 	}
 	
 	@Override

@@ -59,7 +59,6 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	private ArrayList<Child> childs;
 	private CircleImageView imgParent;
 	private TextView txtParentName;
-	//private TextView txtChildCount;
 	private ProgressBar progressBar;
 	private ImageButton btnBack;
 	private ImageButton btnSettings;
@@ -128,7 +127,6 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 
 		imgParent = findViewById(R.id.imgParent);
 		txtParentName = findViewById(R.id.txtParentName);
-		//txtChildCount = findViewById(R.id.txtChildCount);
 		linearLayout = findViewById(R.id.linearLayoutParentSignedInActivity);
 
 		toolbar = findViewById(R.id.toolbar);
@@ -167,8 +165,6 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				if (dataSnapshot.exists()) {
-					//long childCount = dataSnapshot.getChildrenCount();
-					//txtChildCount.setText(String.valueOf(childCount));
 					
 					childs = new ArrayList<>();
 					for (DataSnapshot child : dataSnapshot.getChildren()) {
@@ -207,7 +203,6 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				if (dataSnapshot.exists()) {
 					DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
-					//String key = dataSnapshot.getKey();
 					Parent parent = nodeShot.getValue(Parent.class);
 					String parentName = parent.getName();
 					String profileImageUrl = parent.getProfileImage();
@@ -317,15 +312,9 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	
 	@Override
 	public void onLockCanceled() {
-		//Toast.makeText(this, getString(R.string.canceled), Toast.LENGTH_SHORT).show();
 		initializeAdapter();
 	}
 
-    /*@Override
-    public void onLockDismiss() {
-        //initializeAdapter();
-    }*/
-	
 	private void updatePhoneLock(final ScreenLock screenLock) {
 		Query childQuery = databaseReference.child("childs").orderByChild("email").equalTo(childEmail);
 		childQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -350,6 +339,5 @@ public class ParentSignedInActivity extends AppCompatActivity implements OnChild
 	@Override
 	public void onBackPressed() {
 		moveTaskToBack(true);
-		//finishAffinity();
 	}
 }
