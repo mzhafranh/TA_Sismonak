@@ -3,6 +3,32 @@
 
 **Sismonak** adalah aplikasi kontrol orang tua android gratis dan sumber terbuka yang memungkinkan orang tua mengendalikan aktivitas anak-anak mereka. Sismonak adalah pengembangan dari proyek yang sudah ada yang dikenal sebagai [KidSafe](https://github.com/xMansour/KidSafe) oleh Mahmoud Mansour dan Khalid Samir.
 
+## Fitur Sismonak
+1. Fitur mengunci HP anak secara langsung atau setelah durasi waktu tertentu
+2. Fitur melihat daftar aplikasi yang terpasang di HP anak
+3. Fitur memblokir akses terhadap aplikasi yang terpasang di HP anak
+4. Fitur melihat statistik penggunaan aplikasi di HP anak
+5. Fitur melihat lokasi HP anak
+6. Fitur melihat lokasi orang tua untuk dibandingkan dengan lokasi anak
+7. Fitur membuat pagar virtual (geofence) untuk membatasi lokasi anak
+8. Fitur visualisasi pagar virtual berupa area berbentuk lingkaran
+9. Fitur melihat riwayat panggilan telepon, SMS, dan kontak pada HP anak
+10. Fitur mengganti foto profil orang tua dan anak
+11. Fitur bahasa Indonesia dan Inggris
+
+## Screenshot Sismonak
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_1.png" alt="screenshot sismonak 1"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_2.png" alt="screenshot sismonak 2"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_3.png" alt="screenshot sismonak 3"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_4.png" alt="screenshot sismonak 4"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_5.png" alt="screenshot sismonak 5"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_6.png" alt="screenshot sismonak 6"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_7.png" alt="screenshot sismonak 7"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_8.png" alt="screenshot sismonak 8"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_9.png" alt="screenshot sismonak 9"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_10.png" alt="screenshot sismonak 10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_11.png" alt="screenshot sismonak 11"/>
+
 ## Panduan setup
 ### Video 
 https://youtu.be/tXr5AVMVrxo
