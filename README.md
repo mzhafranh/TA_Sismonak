@@ -1,5 +1,5 @@
 # Welcome to Sismonak (Sistem Monitoring Anak)!
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/icons/sismonak_icon.png" alt="Sismonak Icon"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/icons/sismonak_icon.png" alt="Sismonak Icon" width="200" hspace="10" vspace="10"/>
 
 **Sismonak** adalah aplikasi kontrol orang tua android gratis dan sumber terbuka yang memungkinkan orang tua mengendalikan aktivitas anak-anak mereka. Sismonak adalah pengembangan dari proyek yang sudah ada yang dikenal sebagai [KidSafe](https://github.com/xMansour/KidSafe) oleh Mahmoud Mansour dan Khalid Samir.
 
@@ -17,17 +17,17 @@
 11. Fitur bahasa Indonesia dan Inggris
 
 ## Screenshot Sismonak
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_1.png" alt="screenshot sismonak 1"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_2.png" alt="screenshot sismonak 2"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_3.png" alt="screenshot sismonak 3"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_4.png" alt="screenshot sismonak 4"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_5.png" alt="screenshot sismonak 5"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_6.png" alt="screenshot sismonak 6"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_7.png" alt="screenshot sismonak 7"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_8.png" alt="screenshot sismonak 8"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_9.png" alt="screenshot sismonak 9"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_10.png" alt="screenshot sismonak 10"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_11.png" alt="screenshot sismonak 11"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_1.png" alt="screenshot sismonak 1" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_2.png" alt="screenshot sismonak 2" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_3.png" alt="screenshot sismonak 3" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_4.png" alt="screenshot sismonak 4" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_5.png" alt="screenshot sismonak 5" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_6.png" alt="screenshot sismonak 6" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_7.png" alt="screenshot sismonak 7" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_8.png" alt="screenshot sismonak 8" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_9.png" alt="screenshot sismonak 9" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_10.png" alt="screenshot sismonak 10" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_11.png" alt="screenshot sismonak 11" width="200" hspace="10" vspace="10"/>
 
 ## Panduan setup
 ### Video 
