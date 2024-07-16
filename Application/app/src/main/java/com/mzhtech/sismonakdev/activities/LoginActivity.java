@@ -380,8 +380,6 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 	private void startModeSelectionActivity() {
 		Intent intent = new Intent(this, ModeSelectionActivity.class);
 		startActivity(intent);
-        /*Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);*/
 	}
 	
 	private void sendPasswordRecoveryEmail() {
@@ -398,7 +396,6 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 			startActivityForResult(signInIntent, Constant.RC_SIGN_IN);
 		} else
 			startInformationDialogFragment(getResources().getString(R.string.you_re_offline_ncheck_your_connection_and_try_again));
-		
 	}
 	
 	@Override
@@ -443,7 +440,6 @@ public class LoginActivity extends AppCompatActivity implements OnPasswordResetL
 	
 	@Override
 	public void onCancelClicked() {
-		//Toast.makeText(this, getString(R.string.canceled), Toast.LENGTH_SHORT).show();
 	}
 	
 	private void sendPasswordRecoveryEmail(String email) {

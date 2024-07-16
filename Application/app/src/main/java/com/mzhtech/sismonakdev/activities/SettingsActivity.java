@@ -258,7 +258,7 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 			else
 				databaseReference.child("childs").child(uid).child("profileImage").setValue(imageUri);
 
-		} else if (!googleAuth) {
+		} else if (imageUri != null) {
 			final StorageReference profileImageStorageReference = storageReference.child(uid + "_profileImage");
 			profileImageStorageReference.putFile(Uri.parse(imageUri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 				@Override
