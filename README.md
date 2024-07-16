@@ -18,8 +18,8 @@
 
 ## Screenshot Sismonak
 <img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_1.png" alt="screenshot sismonak 1" width="200" hspace="10" vspace="10"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_2.png" alt="screenshot sismonak 2" width="200" hspace="10" vspace="10"/>
-<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_3.png" alt="screenshot sismonak 3" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/Screenshot_2.png" alt="screenshot sismonak 2" width="200" hspace="10" vspace="10"/>
+<img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/Screenshot_3.png" alt="screenshot sismonak 3" width="200" hspace="10" vspace="10"/>
 <img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_4.png" alt="screenshot sismonak 4" width="200" hspace="10" vspace="10"/>
 <img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_5.png" alt="screenshot sismonak 5" width="200" hspace="10" vspace="10"/>
 <img src="https://raw.githubusercontent.com/mzhafranh/TA_Sismonak/master/graphics/screenshots/screenshot_6.png" alt="screenshot sismonak 6" width="200" hspace="10" vspace="10"/>
