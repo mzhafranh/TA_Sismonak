@@ -209,6 +209,8 @@
     <string name="photo_uploaded_succesfully">Profile photo uploaded successfully</string>
     <string name="show_password">Show Password</string>
     <string name="hide_password">Hide Password</string>
+    <string name="immediately">Immediately</string>
+    <string name="specify_a_period">Specify a period</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 </resources>

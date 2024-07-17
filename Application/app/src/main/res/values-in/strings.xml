@@ -196,4 +196,6 @@
     <string name="photo_uploaded_succesfully">Foto profil berhasil diunggah</string>
     <string name="show_password">Tampilkan Sandi</string>
     <string name="hide_password">Sembunyikan Sandi</string>
+    <string name="immediately">Sekarang</string>
+    <string name="specify_a_period">Setelah sekian waktu</string>
 </resources>

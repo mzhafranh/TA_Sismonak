@@ -13,8 +13,8 @@
     </string-array>
 
     <string-array name="timer_entries">
-        <item>Immediately</item>
-        <item>Specify a period</item>
+        <item>@string/immediately</item>
+        <item>@string/specify_a_period</item>
     </string-array>
 
 
