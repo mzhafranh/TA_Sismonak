@@ -225,14 +225,12 @@ public class SettingsActivity extends AppCompatActivity implements OnLanguageSel
 			LocaleUtils.setLocale(this, "in");
 		}
 		restartApp();
-		
 	}
 	
 	private void restartApp() {
 		Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		
 	}
 
 	private void openFileChooser() {
